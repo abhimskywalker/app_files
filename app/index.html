@@ -1,29 +1,137 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-<head>
-  <meta charset="utf-8">
-  <title>My AngularJS App</title>
-  <link rel="stylesheet" href="css/app.css"/>
-</head>
-<body>
-  <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Recall movie name for 2 given actors">
+    <meta name="author" content="Abhishek Malik, Ripu Singla">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-  <div ng-view></div>
+    <title>Movie Recall</title>
 
-  <div>Angular seed app: v<span app-version></span></div>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
 
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-  -->
+    <!-- Custom styles for this template -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/sticky-footer.css">
+    <link rel="stylesheet" href="css/app.css"/>
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+
+      <!-- Begin page content -->
+      <div class="container">
+        <div ng-view></div>
+      </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted"><p>Designed by <a href="https://twitter.com/malikabhishek">@malikabhishek</a>.</p></p>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/docs.min.js"></script> -->
+
+    <!-- In Dev use:
   <script src="lib/angular/angular.js"></script>
+  -->
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
   <script src="lib/angular/angular-route.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-resource.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
-</body>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <!--<script type="text/javascript">
+    // jquery.xdomainajax.js  ------ from padolsey
+
+    jQuery.ajax = (function(_ajax){
+
+        var protocol = location.protocol,
+            hostname = location.hostname,
+            exRegex = RegExp(protocol + '//' + hostname),
+            YQL = 'http' + (/^https/.test(protocol)?'s':'') + '://query.yahooapis.com/v1/public/yql?callback=?',
+            query = 'select * from html where url="{URL}" and xpath="*"';
+
+        function isExternal(url) {
+            return !exRegex.test(url) && /:\/\//.test(url);
+        }
+
+        return function(o) {
+
+            var url = o.url;
+
+            if ( /get/i.test(o.type) && !/json/i.test(o.dataType) && isExternal(url) ) {
+
+                // Manipulate options so that JSONP-x request is made to YQL
+
+                o.url = YQL;
+                o.dataType = 'json';
+
+                o.data = {
+                    q: query.replace(
+                        '{URL}',
+                        url + (o.data ?
+                            (/\?/.test(url) ? '&' : '?') + jQuery.param(o.data)
+                        : '')
+                    ),
+                    format: 'xml'
+                };
+
+                // Since it's a JSONP request
+                // complete === success
+                if (!o.success && o.complete) {
+                    o.success = o.complete;
+                    delete o.complete;
+                }
+
+                o.success = (function(_success){
+                    return function(data) {
+
+                        if (_success) {
+                          console.log(data);
+                            // Fake XHR callback.
+                            _success.call(this, {
+                                responseText: data.results[0]
+                                    // YQL screws with <script>s
+                                    // Get rid of them
+                                    .replace(/<script[^>]+?\/>|<script(.|\s)*?\/script>/gi, '')
+                            }, 'success');
+                        }
+
+                    };
+                })(o.success);
+
+            }
+
+            return _ajax.apply(this, arguments);
+
+        };
+
+    })(jQuery.ajax);
+  </script>-->
+  </body>
 </html>
+

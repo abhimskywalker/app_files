@@ -1,0 +1,18 @@
+<div class="" >
+  <h1 style="padding-top: 10%;">They were together in...</h1>
+</div>
+<form role="form" ng-submit="fetchResults()">
+  <div class="form-group">
+    <input type="text"  ng-model="actor_names" class="form-control" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
+  </div>
+  <button type="submit" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
+</form>
+<br>
+<div ng-repeat="movie in movies" class="panel panel-default text-left">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{movie.title}}</h3>
+  </div>
+  <div class="panel-body" style="color:#000;">
+    Release Year: {{movie.year}}
+  </div>
+</div>
