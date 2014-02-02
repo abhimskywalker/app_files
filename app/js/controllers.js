@@ -25,23 +25,23 @@ angular.module('myApp.controllers', []).
         $scope.q_url2 = 'http://www.imdb.com/find?q='+actor2+'&s=nm';
         // $scope.from_url1 = $scope.factory.doCrossDomainGet($scope.q_url1);
         // $scope.from_url2 = $scope.factory.doCrossDomainGet($scope.q_url2);
-        // $http.get($scope.q_url1).success(function(data) {
-        //     console.log(data);
-        //     $scope.actor1_movies = data;
-        // });
-        $.ajax({
-          // url: "http://localhost:3311/get-data",
-          url: $scope.q_url1,
-          type: 'GET',
-          dataType: 'json'
-        })
-        .done(function(data) {
+        $http.jsonp($scope.q_url1).success(function(data) {
             console.log(data);
-            // $rootScope.$apply(function() {d.resolve(data); });
-        })
-        .fail(function(data) {
-            // $rootScope.$apply(function() {d.reject(data); });
+            $scope.actor1_movies = data;
         });
+        // $.ajax({
+        //   // url: "http://localhost:3311/get-data",
+        //   url: $scope.q_url1,
+        //   type: 'GET',
+        //   dataType: 'json'
+        // })
+        // .done(function(data) {
+        //     console.log(data);
+        //     // $rootScope.$apply(function() {d.resolve(data); });
+        // })
+        // .fail(function(data) {
+        //     // $rootScope.$apply(function() {d.reject(data); });
+        // });
         // var data1 = $resource($scope.q_url1);
         // data1.get({}, function (data1) {
         //     console.log(data1);
