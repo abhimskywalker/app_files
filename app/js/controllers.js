@@ -25,9 +25,19 @@ angular.module('myApp.controllers', []).
         $scope.q_url2 = 'http://www.imdb.com/find?q='+actor2+'&s=nm';
         // $scope.from_url1 = $scope.factory.doCrossDomainGet($scope.q_url1);
         // $scope.from_url2 = $scope.factory.doCrossDomainGet($scope.q_url2);
-        $http.jsonp($scope.q_url1).success(function(data) {
-            console.log(data);
-            $scope.actor1_movies = data;
+        // $http.jsonp($scope.q_url1).success(function(data) {
+        //     console.log(data);
+        //     $scope.actor1_movies = data;
+        // });
+        $.ajax({
+            // url: 'http://www.google.com',
+            url: $scope.q_url1,
+            type: 'GET',
+            success: function(res) {
+                // var headline = $(res.responseText).find('a.tsh').text();
+                // alert(headline);
+                console.log(res);
+            }
         });
         // $.ajax({
         //   // url: "http://localhost:3311/get-data",

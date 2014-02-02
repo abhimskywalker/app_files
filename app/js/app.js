@@ -15,13 +15,13 @@ angular.module('myApp', [
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
   $httpProvider.defaults.transformResponse = [];
   $httpProvider.defaults.transformRequest.push(function (data, headerGetter) {
-        console.log("transform Request");
+        // console.log("transform Request");
         return data;
     });
   $httpProvider.defaults.transformResponse = [];
   $httpProvider.defaults.transformResponse.push(function (data, headerGetter) {
-        console.log("transform Response");
-        console.log(data);
+        // console.log("transform Response");
+        // console.log(data);
         return data;
     });
   $routeProvider.when('/', {templateUrl: 'partials/home.html', controller: 'Home'});
