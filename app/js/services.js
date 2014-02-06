@@ -11,6 +11,7 @@ angular.module('myApp.services', [])
         // return promise for response text for the given url
         var getResponseText = function(q_url){
             var deferred = $q.defer();
+            console.log('fetching url: ', q_url);
 
             deferred.resolve(
                 $.ajax({
@@ -31,6 +32,7 @@ angular.module('myApp.services', [])
 
         var getActorMovies = function(actor_link1){
             var deferred = $q.defer();
+            console.log('fetching url: ', actor_link1);
 
             deferred.resolve(
                 $.ajax({
