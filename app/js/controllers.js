@@ -31,12 +31,6 @@ angular.module('myApp.controllers', []).
         }
 
 
-
-
-
-//        $scope.complete2 = false;
-
-
         $scope.collect_list_items = function(div_list, role){
 
             var movies_1 = [];
@@ -85,7 +79,7 @@ angular.module('myApp.controllers', []).
             var deferred = $q.defer();
 
             if (num_try > 3) {
-                deff.resolve([]);
+                deferred.resolve([]);
             }
 
             var raw_data1 = res;
@@ -116,8 +110,6 @@ angular.module('myApp.controllers', []).
 
             return deferred.promise;
         }
-
-
 
 
         $scope.call_intersection = function() {
@@ -166,11 +158,11 @@ angular.module('myApp.controllers', []).
             }
         }
 
+
         $scope.populate_actor = function(url, actor_num, num_try) {
 
             fetchResponseFactory.getResponseText(url)
                 .then(function(result){
-//                    var deferred = $q.defer();
                     $scope.get_actor(result['results'][0], url, actor_num, num_try)
                         .then(function(list_obj){
                             if (list_obj.length > 0) {
@@ -182,21 +174,14 @@ angular.module('myApp.controllers', []).
                                     $scope.assign_actor2(list_obj);
                                     $scope.actors_db[$scope.actor2] = list_obj;
                                 }
-
                                 $scope.check_to_call_intersection(url);
                             }
-
-                        })
-                    ;
+                        });
                 }, function(reason){
                     console.log(reason);
                     // TODO: retry in case of failure first time...
-                })
-            ;
-
+                }) ;
         }
-
-
 
 
         $scope.fetchResults = function(){
