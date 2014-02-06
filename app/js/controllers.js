@@ -7,19 +7,24 @@ angular.module('myApp.controllers', []).
         // controller('Home', function($scope, $http, XDomainData) {
 
         $scope.actor_names = '';
+        $scope.actors_db = {};
 
 
         $scope.initiate_vars = function() {
 
             $scope.movies = [];
-            $scope.q_url1 = '';
-            $scope.q_url2 = '';
             $scope.complete = false;
+
+            $scope.actor1 = '';
+            $scope.q_url1 = '';
             $scope.movies_1 = [];
-            $scope.movies_2 = [];
             $scope.actor1_pic_url = '';
             $scope.actor_name1 = '';
             $scope.actor_link1 = '';
+
+            $scope.actor2 = '';
+            $scope.q_url2 = '';
+            $scope.movies_2 = [];
             $scope.actor2_pic_url = '';
             $scope.actor_name2 = '';
             $scope.actor_link2 = '';
@@ -136,7 +141,30 @@ angular.module('myApp.controllers', []).
             $scope.complete = false;
         }
 
+        $scope.assign_actor1 = function(list_obj) {
+            $scope.actor1_pic_url = list_obj[0];
+            $scope.actor_name1 = list_obj[1];
+            $scope.actor_link1 = list_obj[2];
+            $scope.movies_1 = list_obj[3];
+        }
 
+        $scope.assign_actor2 = function(list_obj) {
+            $scope.actor2_pic_url = list_obj[0];
+            $scope.actor_name2 = list_obj[1];
+            $scope.actor_link2 = list_obj[2];
+            $scope.movies_2 = list_obj[3];
+        }
+
+
+        $scope.check_to_call_intersection = function(url){
+            if ($scope.complete == true) {
+                $scope.call_intersection();
+            }
+            else {
+                $scope.complete = true;
+                console.log('changing the flag', url, 'done');
+            }
+        }
 
         $scope.populate_actor = function(url, actor_num, num_try) {
 
@@ -147,26 +175,15 @@ angular.module('myApp.controllers', []).
                         .then(function(list_obj){
                             if (list_obj.length > 0) {
                                 if (actor_num == 1) {
-                                    $scope.actor1_pic_url = list_obj[0];
-                                    $scope.actor_name1 = list_obj[1];
-                                    $scope.actor_link1 = list_obj[2];
-                                    $scope.movies_1 = list_obj[3];
+                                    $scope.assign_actor1(list_obj);
+                                    $scope.actors_db[$scope.actor1] = list_obj;
                                 }
                                 else {
-                                    $scope.actor2_pic_url = list_obj[0];
-                                    $scope.actor_name2 = list_obj[1];
-                                    $scope.actor_link2 = list_obj[2];
-                                    $scope.movies_2 = list_obj[3];
+                                    $scope.assign_actor2(list_obj);
+                                    $scope.actors_db[$scope.actor2] = list_obj;
                                 }
 
-                                if ($scope.complete == true) {
-                                    $scope.call_intersection();
-                                }
-                                else {
-                                    $scope.complete = true;
-//                                $scope.$apply();
-                                    console.log('changing the flag', url, 'done');
-                                }
+                                $scope.check_to_call_intersection(url);
                             }
 
                         })
@@ -186,13 +203,26 @@ angular.module('myApp.controllers', []).
 
             $scope.initiate_vars();
             console.log('Yay Search got clicked for:' + $scope.actor_names );
-            var actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
-            var actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
-            $scope.q_url1 = 'http://www.imdb.com/find?q='+actor1+'&s=nm';
-            $scope.q_url2 = 'http://www.imdb.com/find?q='+actor2+'&s=nm';
+            $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
+            $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
+            $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
+            $scope.q_url2 = 'http://www.imdb.com/find?q='+$scope.actor2+'&s=nm';
 
-            $scope.populate_actor($scope.q_url1, 1, 0);
-            $scope.populate_actor($scope.q_url2, 2, 0);
+            if ($scope.actor1 in $scope.actors_db) {
+                $scope.assign_actor1($scope.actors_db[$scope.actor1]);
+                $scope.check_to_call_intersection($scope.q_url1);
+            }
+            else {
+                $scope.populate_actor($scope.q_url1, 1, 0);
+            }
+
+            if ($scope.actor2 in $scope.actors_db) {
+                $scope.assign_actor2($scope.actors_db[$scope.actor2]);
+                $scope.check_to_call_intersection($scope.q_url2);
+            }
+            else {
+                $scope.populate_actor($scope.q_url2, 2, 0);
+            }
 
         }
     })

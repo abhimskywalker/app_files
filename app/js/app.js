@@ -9,7 +9,8 @@ angular.module('myApp', [
   'myApp.services',
   'myApp.directives',
   'myApp.controllers',
-  'ngAnimate'
+  'ngAnimate',
+  'ui.utils'
 ])
 .config(function($routeProvider, $httpProvider, $parseProvider) {
   $httpProvider.defaults.useXDomain = true;
