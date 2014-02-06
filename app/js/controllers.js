@@ -167,7 +167,7 @@ angular.module('myApp.controllers', []).
                                                 // console.log($scope.movies_1[i]['movie_id']==$scope.movies_2[j]['movie_id']);
                                                 if ($scope.movies_1[i]['movie_id'] === $scope.movies_2[j]['movie_id']) {
                                                     var m1 = $scope.movies_1[i];
-                                                    var m2 = $scope.movies_2[i];
+                                                    var m2 = $scope.movies_2[j];
                                                     intersection_movies.push({'movie_id':m1['movie_id'],'movie_name':m1['movie_name'],'year':m1['year'],'a1_role':m1['role'],'a2_role':m2['role'],'link':m1['link']});
                                                     // intersection_movies.push($scope.movies_1[i]);
                                                 };
