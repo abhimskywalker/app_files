@@ -17,6 +17,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/sticky-footer.css">
     <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/animation.css"/>
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -33,9 +34,7 @@
     <div id="wrap">
 
       <!-- Begin page content -->
-      <div class="container">
-        <div ng-view></div>
-      </div>
+      <div ng-view class="slide-animation"></div>
     </div>
 
     <div id="footer">
@@ -59,6 +58,7 @@
     <!-- In Dev use:
   <script src="lib/angular/angular.js"></script>
   -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
   <script src="lib/angular/angular-route.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-resource.js"></script>
@@ -69,7 +69,6 @@
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="js/jquery.xdomainajax.js"></script>
   </body>
 </html>

@@ -1,49 +1,57 @@
-<div class="row">
-    <div class="col-sm-12" >
-      <h1 style="padding-top: 10%;">They were together in...</h1>
-      <form role="form" ng-submit="fetchResults()">
-        <div class="form-group">
-          <input type="text"  ng-model="actor_names" class="form-control" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
-        </div>
-        <button type="submit" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
-      </form>
-    </div>
-    <hr>
-    <div class="col-sm-12">
-        <div class="row">
-            <div class="col-sm-6 col-xs-6">
-                <h3 class="">{{actor_name1}}</h3>
-                <img src="{{actor1_pic_url}}" class=" img-circle">
-            </div>
-            <div class="col-sm-6 col-xs-6">
-                <h3 class="">{{actor_name2}}</h3>
-                <img src="{{actor2_pic_url}}" class=" img-circle">
-            </div>
-        </div>
-        <hr>
-        <div ng-repeat="movie in movies" class="panel panel-default text-left">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{movie.movie_name}}<small class="pull-right text-muted" style="margin-top: 0px;">Release Year: {{movie.year}}</small></h3>
+<!-- Begin page content -->
+<div class="container" style="padding-bottom:0.5em;">
+  <div class="row">
+      <div class="col-sm-12" >
+        <h1 style="padding-top: 1.5em;" class="slide-reveal">They were together in...</h1>
+        <form role="form" ng-submit="fetchResults()">
+          <div class="form-group">
+            <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
           </div>
-          <div class="panel-body" style="color:#000;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>{{actor_name1}}</th>
-                        <th>{{actor_name2}}</th>
-                        <th><a href="{{movie.link}}" style="color: #000;">IMDB movie link.</a></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{movie.a1_role}}</td>
-                        <td>{{movie.a2_role}}</td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-          </div>
-        </div>
-    </div>
+          <button type="submit" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
+          <!-- <div class="input-group">
+            <input type="text" ng-model="actor_names" class="form-control" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div> -->
+        </form>
+      </div>
+  </div>
 </div>
-
+<div class="visible-lg" style="position: fixed;width: 100%;">
+  <div class="row">
+      <div class="col-sm-12">
+          <div class="row">
+              <div class="col-sm-3 col-xs-3">
+                  <img style="max-height:200px;" src="{{actor1_pic_url}}" class="img-circle">
+                  <h5 class="reveal">{{actor_name1}}</h5>
+              </div>
+              <div class="col-sm-6 col-xs-6"></div>
+              <div class="col-sm-3 col-xs-3">
+                  <img style="max-height:200px;" src="{{actor2_pic_url}}" class="img-circle">
+                  <h5 class="reveal">{{actor_name2}}</h5>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+      <div class="col-sm-12">
+          <table class="table table-hover">
+              <tbody>
+                  <tr ng-repeat="movie in movies" class="slide-reveal">
+                      <th><a href="{{movie.link}}" style="color: #000;">{{movie.movie_name}}</a></th>
+                      <th><p><small class="pull-right" style="margin-top: 0px;">{{movie.year}}</small></p></th>
+                  </tr>
+              </tbody>
+          </table>
+          <!-- <ul class="list-group">
+            <li ng-repeat="movie in movies" class="list-group-item">
+              <span class="badge">{{movie.year}}</span>
+              <a href="{{movie.link}}" style="color: #000;">{{movie.movie_name}}</a>
+            </li>
+          </ul> -->
+      </div>
+  </div>
+</div>
