@@ -6,7 +6,7 @@
 a,
 a:focus,
 a:hover {
-  color: #fff;
+  color: #aaaaaa;
 }
 
 /* Custom default button */
@@ -16,7 +16,7 @@ a:hover {
   color: #333;
   text-shadow: none; /* Prevent inheritence from `body` */
   background-color: #fff;
-  border: 1px solid #fff;
+  border: 1px solid #eee;
 }
 
 
@@ -27,7 +27,8 @@ html,
 body {
   height: 100%;
   /* The html and body elements cannot have any padding or margin. */
-  color: #fff;
+  /*color: #fff;*/
+  color: #aaaaaa;
   text-align: center;
 }
 

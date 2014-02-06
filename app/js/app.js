@@ -8,9 +8,10 @@ angular.module('myApp', [
   'myApp.filters',
   'myApp.services',
   'myApp.directives',
-  'myApp.controllers'
+  'myApp.controllers',
+  'ngAnimate'
 ])
-.config(function($routeProvider, $httpProvider) {
+.config(function($routeProvider, $httpProvider, $parseProvider) {
   $httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
   $httpProvider.defaults.transformResponse = [];
@@ -28,6 +29,7 @@ angular.module('myApp', [
   $routeProvider.otherwise({redirectTo: '/'});
   $httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  $parseProvider.unwrapPromises(true);
 })
 // .config(['$routeProvider', ,'$httpProvider', function($routeProvider, $httpProvider) {
 //     // $httpProvider.defaults.useXDomain = true;
