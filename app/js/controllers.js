@@ -5,10 +5,30 @@
 angular.module('myApp.controllers', []).
     controller('Home', function($scope, $http, $resource, $timeout, $q, fetchResponseFactory) {
         // controller('Home', function($scope, $http, XDomainData) {
+
         $scope.actor_names = '';
-        $scope.movies = [];
-        $scope.q_url1 = '';
-        $scope.complete = false;
+
+
+        $scope.initiate_vars = function() {
+
+            $scope.movies = [];
+            $scope.q_url1 = '';
+            $scope.q_url2 = '';
+            $scope.complete = false;
+            $scope.movies_1 = [];
+            $scope.movies_2 = [];
+            $scope.actor1_pic_url = '';
+            $scope.actor_name1 = '';
+            $scope.actor_link1 = '';
+            $scope.actor2_pic_url = '';
+            $scope.actor_name2 = '';
+            $scope.actor_link2 = '';
+        }
+
+
+
+
+
 //        $scope.complete2 = false;
 
 
@@ -52,6 +72,8 @@ angular.module('myApp.controllers', []).
             var movies_1 = movies_actor.concat(movies_actress).concat(movies_director);
             return movies_1;
         }
+
+
 
         $scope.get_actor = function(res, url, actor_num, num_try){
 
@@ -120,7 +142,7 @@ angular.module('myApp.controllers', []).
 
             fetchResponseFactory.getResponseText(url)
                 .then(function(result){
-                    var deferred = $q.defer();
+//                    var deferred = $q.defer();
                     $scope.get_actor(result['results'][0], url, actor_num, num_try)
                         .then(function(list_obj){
                             if (list_obj.length > 0) {
@@ -162,6 +184,7 @@ angular.module('myApp.controllers', []).
 
         $scope.fetchResults = function(){
 
+            $scope.initiate_vars();
             console.log('Yay Search got clicked for:' + $scope.actor_names );
             var actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
             var actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
