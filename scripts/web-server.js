@@ -8,11 +8,13 @@ var util = require('util'),
 
 var DEFAULT_PORT = 8000;
 
+var port = Number(process.env.PORT || 5000);
+
 function main(argv) {
   new HttpServer({
     'GET': createServlet(StaticServlet),
     'HEAD': createServlet(StaticServlet)
-  }).start(Number(argv[2]) || DEFAULT_PORT);
+  }).start(port || Number(argv[2]) || DEFAULT_PORT);
 }
 
 function escapeHtml(value) {
