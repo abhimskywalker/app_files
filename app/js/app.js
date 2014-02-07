@@ -10,7 +10,9 @@ angular.module('myApp', [
   'myApp.directives',
   'myApp.controllers',
   'ngAnimate',
-  'ui.utils'
+  'ui.utils',
+  'angulartics',
+  'angulartics.google.analytics'
 ])
 .config(function($routeProvider, $httpProvider, $parseProvider) {
   $httpProvider.defaults.useXDomain = true;

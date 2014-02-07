@@ -5,9 +5,9 @@
         <h1 style="padding-top: 1.5em;" class="slide-reveal">They were together in...</h1>
         <form role="form" ng-submit="fetchResults()">
           <div class="form-group">
-            <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
+            <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma" analytics-on analytics-event="Search" analytics-category="search by enter" analytics-label="{{actor_names}}">
           </div>
-          <button type="submit" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
+          <button type="submit" analytics-on="click" analytics-event="Search" analytics-category="search by button" analytics-label="{{actor_names}}" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
           <!-- <div class="input-group">
             <input type="text" ng-model="actor_names" class="form-control" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
             <span class="input-group-btn">
