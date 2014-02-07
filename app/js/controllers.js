@@ -3,7 +3,7 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
-    controller('Home', function($scope, $http, $resource, $timeout, $q, fetchResponseFactory) {
+    controller('Home', function($scope, $http, $resource, $timeout, $q, fetchResponseFactory, $analytics) {
         // controller('Home', function($scope, $http, XDomainData) {
 
         $scope.actor_names = '';
@@ -115,6 +115,7 @@ angular.module('myApp.controllers', []).
         $scope.call_intersection = function() {
 
             console.log('intersection calculation initiated');
+            $analytics.eventTrack('Search', {  category: '(' + $scope.actor_name1 + ',' + $scope.actor_name2 + ')', label: 'Actors:' + $scope.actor_name1 + ',' + $scope.actor_name2 });
             var intersection_movies = [];
 
             for (var i = $scope.movies_1.length - 1; i >= 0; i--) {
