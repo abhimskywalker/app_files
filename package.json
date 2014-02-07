@@ -1,12 +1,38 @@
 {
-  "name": "angularjs-seed",
+  "name": "togetherin",
   "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/angular/angular-seed"
+  },
   "devDependencies": {
-    "phantomjs" : "~1.9",
-    "karma" : "~0.10",
-    "karma-junit-reporter" : "~0.1",
-    "karma-jasmine" : "~0.1",
-    "karma-ng-scenario" : "~0.1"
-  }
+    "phantomjs": "~1.9",
+    "karma": "~0.10",
+    "karma-junit-reporter": "~0.1",
+    "karma-jasmine": "~0.1",
+    "karma-ng-scenario": "~0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/angular/angular-seed/issues"
+  },
+  "homepage": "https://github.com/angular/angular-seed",
+  "version": "0.1.0",
+  "main": "scripts/web-server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Abhishek Malik, Ripu Singla",
+  "license": "ISC",
+  "dependencies": {
+    "express": "~3.4.8",
+    "logfmt": "~0.20.0"
+  },
+  "keywords": [
+    "movies",
+    "actors",
+    "together"
+  ]
 }
