@@ -115,9 +115,9 @@ angular.module('myApp.controllers', []).
         $scope.call_intersection = function() {
 
             console.log('intersection calculation initiated');
-            $analytics.eventTrack('Search', {  category: 'Actor Pair:(' + $scope.actor_name1 + ',' + $scope.actor_name2 + ')', label: 'Actors:' + $scope.actor_name1 + ',' + $scope.actor_name2 });
-            $analytics.eventTrack('Search', {  category: 'Actor:(' + $scope.actor_name1 + ')', label: 'Actor:' + $scope.actor_name1 });
-            $analytics.eventTrack('Search', {  category: 'Actor:(' + $scope.actor_name2 + ')', label: 'Actor:' + $scope.actor_name2 });
+            $analytics.eventTrack('Search Pair', {  category: 'Actor Pair:(' + $scope.actor_name1 + ',' + $scope.actor_name2 + ')', label: 'Actors:' + $scope.actor_name1 + ',' + $scope.actor_name2 });
+            $analytics.eventTrack('Search Actor', {  category: 'Actor:(' + $scope.actor_name1 + ')', label: 'Actor:' + $scope.actor_name1 });
+            $analytics.eventTrack('Search Actor', {  category: 'Actor:(' + $scope.actor_name2 + ')', label: 'Actor:' + $scope.actor_name2 });
             var intersection_movies = [];
 
             for (var i = $scope.movies_1.length - 1; i >= 0; i--) {
