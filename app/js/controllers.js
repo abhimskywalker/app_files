@@ -18,7 +18,6 @@ angular.module('myApp.controllers', []).
         });
 
 
-
         $scope.initiate_vars = function() {
 
             $scope.movies = [];
