@@ -3,11 +3,17 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
-    controller('Home', function($scope, $http, $resource, $timeout, $q, fetchResponseFactory, $analytics, $firebase) {
+    controller('Home', function($scope, $http, $resource, $timeout, $q, fetchResponseFactory, $analytics, $firebase, usSpinnerService) {
         // controller('Home', function($scope, $http, XDomainData) {
 
         $scope.actor_names = '';
         $scope.actors_db = {};
+        var ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
+        $scope.moviedb = $firebase(ref);
+        var random = $scope.moviedb.$child('initiate');
+        $scope.moviedb.$on('loaded',function(){
+            console.log('Firebase initiated:',random);
+        });
 
 
         $scope.initiate_vars = function() {
@@ -29,9 +35,6 @@ angular.module('myApp.controllers', []).
             $scope.actor2_pic_url = '';
             $scope.actor_name2 = '';
             $scope.actor_link2 = '';
-
-            var ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
-            $scope.moviedb = $firebase(ref);
         }
 
 
@@ -133,10 +136,15 @@ angular.module('myApp.controllers', []).
                     };
 
                     if (i===0 && j===0) {
+                        usSpinnerService.stop('spinner-1');
                         $scope.movies = intersection_movies;
                     };
                 };
             };
+            if (intersection_movies.length == 0){
+                intersection_movies.push({'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''});
+            }
+            usSpinnerService.stop('spinner-1');
             $scope.complete1 = false;
             $scope.complete2 = false;
         }
@@ -221,6 +229,7 @@ angular.module('myApp.controllers', []).
 
         $scope.fetchResults = function(){
 
+            usSpinnerService.spin('spinner-1');
             $scope.initiate_vars();
             console.log('Yay Search got clicked for:' + $scope.actor_names );
             $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');

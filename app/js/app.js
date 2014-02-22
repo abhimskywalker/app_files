@@ -13,7 +13,8 @@ angular.module('myApp', [
   'ui.utils',
   'angulartics',
   'angulartics.google.analytics',
-  "firebase"
+  "firebase",
+  'angularSpinner'
 ])
 .config(function($routeProvider, $httpProvider, $parseProvider) {
   $httpProvider.defaults.useXDomain = true;
