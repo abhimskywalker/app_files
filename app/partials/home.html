@@ -5,7 +5,9 @@
         <h1 style="padding-top: 1.5em;" class="slide-reveal">They were together in...</h1>
         <form role="form" ng-submit="fetchResults()">
           <div class="form-group">
-            <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
+              <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma"
+              keyboard-poster post-function="ac_search"
+              typeahead="address for address in titles" typeahead-on-select="add_comma()" >
           </div>
           <button type="submit" analytics-on="click" analytics-event="Search Initiated" analytics-category="search for actors" analytics-label="Actors searched for: {{actor_names}}" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
           <!-- <div class="input-group">
@@ -46,12 +48,9 @@
                   </tr>
               </tbody>
           </table>
-          <!-- <ul class="list-group">
-            <li ng-repeat="movie in movies" class="list-group-item">
-              <span class="badge">{{movie.year}}</span>
-              <a href="{{movie.link}}" style="color: #000;">{{movie.movie_name}}</a>
-            </li>
-          </ul> -->
+          <div class='col-sm-4' style="margin-left: 48%;margin-top: 5%;">
+            <span us-spinner="{lines: 17,length: 9,width: 2,radius: 22,corners: 1,rotate: 0,direction: 1,color: '#000',speed: 1.5,trail: 48,shadow: false,hwaccel: false,className: 'spinner',zIndex: 2e9}" spinner-key="spinner-1"></span>
+          </div>
       </div>
   </div>
 </div>
