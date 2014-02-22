@@ -229,32 +229,22 @@ angular.module('myApp.controllers', []).
             $scope.q_url2 = 'http://www.imdb.com/find?q='+$scope.actor2+'&s=nm';
             $scope.list_obj1 = $scope.moviedb.$child($scope.cleanName($scope.actor1));
             $scope.list_obj2 = $scope.moviedb.$child($scope.cleanName($scope.actor2));
-            // var ref1 = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/"+$scope.cleanName($scope.actor1)+'/');
-            // $scope.list_obj1_p = $firebase(ref1);
-            $scope.moviedb.$on('loaded',function(){
-                console.log('From th on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
-                if ($scope.list_obj1.$getIndex().length > 0){
-                   console.log('Got info from firebase for:',$scope.actor1)
-                   var temp = [$scope.list_obj1[0],$scope.list_obj1[1],$scope.list_obj1[2],$scope.list_obj1[3]]
-                   $scope.assign_actor1(temp);
-                   $scope.actors_db[$scope.actor1] = temp;
-                   $scope.check_to_call_intersection($scope.q_url1,1);
-                }
-                console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)                       
-                if ($scope.list_obj2.$getIndex().length > 0){
-                   console.log('Got info from firebase for:',$scope.actor2)
-                   var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3]]
-                   $scope.assign_actor2(temp);
-                   $scope.actors_db[$scope.actor2] = temp;
-                   $scope.check_to_call_intersection($scope.q_url2,2);
-                }
-            })
 
             if ($scope.actor1 in $scope.actors_db) {
                $scope.assign_actor1($scope.actors_db[$scope.actor1]);
                $scope.check_to_call_intersection($scope.q_url1,1);
             }
             else {
+                $scope.moviedb.$on('loaded',function(){
+                    console.log('From th on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
+                    if ($scope.list_obj1.$getIndex().length > 0){
+                       console.log('Got info from firebase for:',$scope.actor1)
+                       var temp = [$scope.list_obj1[0],$scope.list_obj1[1],$scope.list_obj1[2],$scope.list_obj1[3]]
+                       $scope.assign_actor1(temp);
+                       $scope.actors_db[$scope.actor1] = temp;
+                       $scope.check_to_call_intersection($scope.q_url1,1);
+                    }
+                });
                 $scope.populate_actor($scope.q_url1, 1, 0);
             }
             
@@ -263,6 +253,16 @@ angular.module('myApp.controllers', []).
                 $scope.check_to_call_intersection($scope.q_url2,2);
             }
             else {
+                $scope.moviedb.$on('loaded',function(){
+                    console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)                       
+                    if ($scope.list_obj2.$getIndex().length > 0){
+                       console.log('Got info from firebase for:',$scope.actor2)
+                       var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3]]
+                       $scope.assign_actor2(temp);
+                       $scope.actors_db[$scope.actor2] = temp;
+                       $scope.check_to_call_intersection($scope.q_url2,2);
+                    }
+                });
                 $scope.populate_actor($scope.q_url2, 2, 0);
             }
         }
