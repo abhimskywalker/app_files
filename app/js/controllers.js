@@ -9,7 +9,10 @@ angular.module('myApp.controllers', []).
         $scope.actor_names = '';
         $scope.actors_db = {};
         $scope.autocomplete1 = '';
+        $scope.autocomplete2 = '';
         $scope.titles = [];
+        $scope.auto_comma = false;
+
         var ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
         $scope.moviedb = $firebase(ref);
         var random = $scope.moviedb.$child('initiate');
@@ -231,53 +234,55 @@ angular.module('myApp.controllers', []).
 
         $scope.fetchResults = function(){
 
-            usSpinnerService.spin('spinner-1');
-            $scope.initiate_vars();
-            console.log('Yay Search got clicked for:' + $scope.actor_names );
-            $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
-            $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
-            $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
-            $scope.q_url2 = 'http://www.imdb.com/find?q='+$scope.actor2+'&s=nm';
-            $scope.list_obj1 = $scope.moviedb.$child($scope.cleanName($scope.actor1));
-            $scope.list_obj2 = $scope.moviedb.$child($scope.cleanName($scope.actor2));
+            $timeout(function() {
+                usSpinnerService.spin('spinner-1');
+                $scope.initiate_vars();
+                console.log('Yay Search got clicked for:' + $scope.actor_names );
+                $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
+                $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
+                $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
+                $scope.q_url2 = 'http://www.imdb.com/find?q='+$scope.actor2+'&s=nm';
+                $scope.list_obj1 = $scope.moviedb.$child($scope.cleanName($scope.actor1));
+                $scope.list_obj2 = $scope.moviedb.$child($scope.cleanName($scope.actor2));
 
-            if ($scope.actor1 in $scope.actors_db) {
-               $scope.assign_actor1($scope.actors_db[$scope.actor1]);
-               $scope.check_to_call_intersection($scope.q_url1,1);
-            }
-            else {
-                $scope.moviedb.$on('loaded',function(){
-                    console.log('From th on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
-                    if ($scope.list_obj1.$getIndex().length > 0){
-                       console.log('Got info from firebase for:',$scope.actor1)
-                       var temp = [$scope.list_obj1[0],$scope.list_obj1[1],$scope.list_obj1[2],$scope.list_obj1[3]]
-                       $scope.assign_actor1(temp);
-                       $scope.actors_db[$scope.actor1] = temp;
-                       $scope.check_to_call_intersection($scope.q_url1,1);
-                    }
-                });
-                $scope.populate_actor($scope.q_url1, 1, 0);
-            }
-            
-            if ($scope.actor2 in $scope.actors_db) {
-                $scope.assign_actor2($scope.actors_db[$scope.actor2]);
-                $scope.check_to_call_intersection($scope.q_url2,2);
-            }
-            else {
-                $scope.moviedb.$on('loaded',function(){
-                    console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)                       
-                    if ($scope.list_obj2.$getIndex().length > 0){
-                       console.log('Got info from firebase for:',$scope.actor2)
-                       var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3]]
-                       $scope.assign_actor2(temp);
-                       $scope.actors_db[$scope.actor2] = temp;
-                       $scope.check_to_call_intersection($scope.q_url2,2);
-                    }
-                });
-                $scope.populate_actor($scope.q_url2, 2, 0);
-            }
+                if ($scope.actor1 in $scope.actors_db) {
+                    $scope.assign_actor1($scope.actors_db[$scope.actor1]);
+                    $scope.check_to_call_intersection($scope.q_url1,1);
+                }
+                else {
+                    $scope.moviedb.$on('loaded',function(){
+                        console.log('From th on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
+                        if ($scope.list_obj1.$getIndex().length > 0){
+                            console.log('Got info from firebase for:',$scope.actor1)
+                            var temp = [$scope.list_obj1[0],$scope.list_obj1[1],$scope.list_obj1[2],$scope.list_obj1[3]]
+                            $scope.assign_actor1(temp);
+                            $scope.actors_db[$scope.actor1] = temp;
+                            $scope.check_to_call_intersection($scope.q_url1,1);
+                        }
+                    });
+                    $scope.populate_actor($scope.q_url1, 1, 0);
+                }
+
+                if ($scope.actor2 in $scope.actors_db) {
+                    $scope.assign_actor2($scope.actors_db[$scope.actor2]);
+                    $scope.check_to_call_intersection($scope.q_url2,2);
+                }
+                else {
+                    $scope.moviedb.$on('loaded',function(){
+                        console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)
+                        if ($scope.list_obj2.$getIndex().length > 0){
+                            console.log('Got info from firebase for:',$scope.actor2)
+                            var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3]]
+                            $scope.assign_actor2(temp);
+                            $scope.actors_db[$scope.actor2] = temp;
+                            $scope.check_to_call_intersection($scope.q_url2,2);
+                        }
+                    });
+                    $scope.populate_actor($scope.q_url2, 2, 0);
+                }
+            }, 60);
+
         }
-
 
 
 
@@ -290,7 +295,7 @@ angular.module('myApp.controllers', []).
                 var obj = titles[i];
                 if ('s' in obj) {
                     if (titles[i]["s"].split(",")[0] in {'Actress':1, 'Actor':1, 'Director':1 }) {
-                        result.push($scope.autocomplete1 + titles[i]['l']);
+                        result.push(titles[i]['l']);
                     }
                 }
             }
@@ -304,14 +309,21 @@ angular.module('myApp.controllers', []).
 
             if (term.indexOf(',') > -1){
                 var typed = term.trim().split(",");
-                $scope.autocomplete1 = typed[0] + ", ";
-                term = typed[1];
-            }
-            else {
-                $scope.autocomplete1 = '';
-            }
+                if ($scope.autocomplete1 == typed[0].trim()) {
+                    $scope.autocomplete2 = "";
+                    term = typed[1].trim();
+                }
+                else if ($scope.autocomplete2 == typed[1].trim()){
+                    $scope.autocomplete1 = "";
+                    term = typed[0].trim();
+                }
+                else if (!$scope.auto_comma) {
+                    $scope.autocomplete1 = typed[0];
+                    term = typed[1].trim();
+                }
 
-            term = term.trim().split(" ");
+            }
+            term = term.split(" ");
 
             if (term[1] == ""){
                 term = term[0]
@@ -320,9 +332,8 @@ angular.module('myApp.controllers', []).
                 term = term.join("_");
             }
 
-            eval("window.imdb$"+term+" = function(d){$scope.title_parser(d)};");
-
             if (term) {
+                eval("window.imdb$"+term+" = function(d){$scope.title_parser(d)};");
                 AutoComplete.autocomplete_search(term.toLowerCase());
             }
         }
@@ -332,9 +343,15 @@ angular.module('myApp.controllers', []).
         $scope.add_comma = function() {
             $timeout(function() {
                 var term = document.getElementById("actor-names").value;
-                if (term.indexOf(',') == -1){
-                    document.getElementById("actor-names").value = term + ", ";
+                if ($scope.autocomplete1 == "") {
+                    $scope.autocomplete1 = term;
                 }
+                else {
+                    $scope.autocomplete2 = term;
+                }
+                document.getElementById("actor-names").value = $scope.autocomplete1 + ", " + $scope.autocomplete2;
+                $scope.auto_comma = true;
+                $scope.actor_names = $scope.autocomplete1 + ", " + $scope.autocomplete2;
             },50) ;
         }
 

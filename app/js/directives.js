@@ -11,7 +11,7 @@ angular.module('myApp.directives', []).
   }])
 
     .directive('keyboardPoster', function($parse, $timeout){
-        var DELAY_TIME_BEFORE_POSTING = 0;
+        var DELAY_TIME_BEFORE_POSTING = 50;
         return function(scope, elem, attrs) {
 
             var element = angular.element(elem)[0];
