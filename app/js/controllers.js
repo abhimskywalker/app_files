@@ -3,7 +3,7 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
-    controller('Home', function($scope, $http, $resource, $timeout, $q, fetchResponseFactory, $analytics) {
+    controller('Home', function($scope, $http, $resource, $timeout, $q, fetchResponseFactory, $analytics, $firebase) {
         // controller('Home', function($scope, $http, XDomainData) {
 
         $scope.actor_names = '';
@@ -13,7 +13,8 @@ angular.module('myApp.controllers', []).
         $scope.initiate_vars = function() {
 
             $scope.movies = [];
-            $scope.complete = false;
+            $scope.complete1 = false;
+            $scope.complete2 = false;
 
             $scope.actor1 = '';
             $scope.q_url1 = '';
@@ -28,6 +29,9 @@ angular.module('myApp.controllers', []).
             $scope.actor2_pic_url = '';
             $scope.actor_name2 = '';
             $scope.actor_link2 = '';
+
+            var ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
+            $scope.moviedb = $firebase(ref);
         }
 
 
@@ -133,10 +137,12 @@ angular.module('myApp.controllers', []).
                     };
                 };
             };
-            $scope.complete = false;
+            $scope.complete1 = false;
+            $scope.complete2 = false;
         }
 
         $scope.assign_actor1 = function(list_obj) {
+            console.log('Assigning for actor 1')
             $scope.actor1_pic_url = list_obj[0];
             $scope.actor_name1 = list_obj[1];
             $scope.actor_link1 = list_obj[2];
@@ -144,6 +150,7 @@ angular.module('myApp.controllers', []).
         }
 
         $scope.assign_actor2 = function(list_obj) {
+            console.log('Assigning for actor 2')
             $scope.actor2_pic_url = list_obj[0];
             $scope.actor_name2 = list_obj[1];
             $scope.actor_link2 = list_obj[2];
@@ -151,13 +158,20 @@ angular.module('myApp.controllers', []).
         }
 
 
-        $scope.check_to_call_intersection = function(url){
-            if ($scope.complete == true) {
+        $scope.check_to_call_intersection = function(url,actor_num){
+            if ($scope.complete1 == true && $scope.complete2 == true) {
                 $scope.call_intersection();
             }
-            else {
-                $scope.complete = true;
-                console.log('changing the flag', url, 'done');
+            else if (actor_num == 1){
+                $scope.complete1 = true;
+                console.log('changing the flag', url, 'done for 1');
+            }
+            else if (actor_num == 2){
+                $scope.complete2 = true;
+                console.log('changing the flag', url, 'done for 2');
+            }
+            if ($scope.complete1 == true && $scope.complete2 == true) {
+                $scope.call_intersection();
             }
         }
 
@@ -170,14 +184,24 @@ angular.module('myApp.controllers', []).
                         .then(function(list_obj){
                             if (list_obj.length > 0) {
                                 if (actor_num == 1) {
-                                    $scope.assign_actor1(list_obj);
-                                    $scope.actors_db[$scope.actor1] = list_obj;
+                                    if ($scope.actor_name1 == list_obj[1] || $scope.actor_name1 == '') {
+                                        console.log('Actor 1 updated');
+                                        $scope.assign_actor1(list_obj);
+                                        $scope.actors_db[$scope.actor1] = list_obj;
+                                        $scope.moviedb.$child($scope.cleanName($scope.actor1)).$set(list_obj);
+                                        $scope.check_to_call_intersection(url,1);
+                                    }
                                 }
                                 else {
-                                    $scope.assign_actor2(list_obj);
-                                    $scope.actors_db[$scope.actor2] = list_obj;
+                                    if ($scope.actor_name2 == list_obj[1] || $scope.actor_name2 == '') {
+                                        console.log('Actor 2 updated');
+                                        $scope.assign_actor2(list_obj);
+                                        $scope.actors_db[$scope.actor2] = list_obj;
+                                        $scope.moviedb.$child($scope.cleanName($scope.actor2)).$set(list_obj);
+                                        $scope.check_to_call_intersection(url,2);
+                                    }
                                 }
-                                $scope.check_to_call_intersection(url);
+                                $scope.check_to_call_intersection(url,3);
                             }
                         });
                 }, function(reason){
@@ -186,6 +210,14 @@ angular.module('myApp.controllers', []).
                 }) ;
         }
 
+        $scope.cleanName = function(name){
+            name = name.replace('.','')
+            name = name.replace('#','')
+            name = name.replace('$','')
+            name = name.replace('[','')
+            name = name.replace(']','')
+            return name
+        }
 
         $scope.fetchResults = function(){
 
@@ -195,23 +227,44 @@ angular.module('myApp.controllers', []).
             $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
             $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
             $scope.q_url2 = 'http://www.imdb.com/find?q='+$scope.actor2+'&s=nm';
+            $scope.list_obj1 = $scope.moviedb.$child($scope.cleanName($scope.actor1));
+            $scope.list_obj2 = $scope.moviedb.$child($scope.cleanName($scope.actor2));
+            // var ref1 = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/"+$scope.cleanName($scope.actor1)+'/');
+            // $scope.list_obj1_p = $firebase(ref1);
+            $scope.moviedb.$on('loaded',function(){
+                console.log('From th on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
+                if ($scope.list_obj1.$getIndex().length > 0){
+                   console.log('Got info from firebase for:',$scope.actor1)
+                   var temp = [$scope.list_obj1[0],$scope.list_obj1[1],$scope.list_obj1[2],$scope.list_obj1[3]]
+                   $scope.assign_actor1(temp);
+                   $scope.actors_db[$scope.actor1] = temp;
+                   $scope.check_to_call_intersection($scope.q_url1,1);
+                }
+                console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)                       
+                if ($scope.list_obj2.$getIndex().length > 0){
+                   console.log('Got info from firebase for:',$scope.actor2)
+                   var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3]]
+                   $scope.assign_actor2(temp);
+                   $scope.actors_db[$scope.actor2] = temp;
+                   $scope.check_to_call_intersection($scope.q_url2,2);
+                }
+            })
 
             if ($scope.actor1 in $scope.actors_db) {
-                $scope.assign_actor1($scope.actors_db[$scope.actor1]);
-                $scope.check_to_call_intersection($scope.q_url1);
+               $scope.assign_actor1($scope.actors_db[$scope.actor1]);
+               $scope.check_to_call_intersection($scope.q_url1,1);
             }
             else {
                 $scope.populate_actor($scope.q_url1, 1, 0);
             }
-
+            
             if ($scope.actor2 in $scope.actors_db) {
                 $scope.assign_actor2($scope.actors_db[$scope.actor2]);
-                $scope.check_to_call_intersection($scope.q_url2);
+                $scope.check_to_call_intersection($scope.q_url2,2);
             }
             else {
                 $scope.populate_actor($scope.q_url2, 2, 0);
             }
-
         }
     })
 ;

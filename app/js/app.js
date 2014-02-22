@@ -12,7 +12,8 @@ angular.module('myApp', [
   'ngAnimate',
   'ui.utils',
   'angulartics',
-  'angulartics.google.analytics'
+  'angulartics.google.analytics',
+  "firebase"
 ])
 .config(function($routeProvider, $httpProvider, $parseProvider) {
   $httpProvider.defaults.useXDomain = true;
