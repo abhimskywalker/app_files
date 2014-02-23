@@ -109,7 +109,8 @@ angular.module('myApp.controllers', []).
                     .then(function(result){
                         movies_1 = $scope.parse_main_page(result['results'][0], actor_link1);
                         var actor1_pic_url = $(result['results'][0]).find('#name-poster')[0].getAttribute('src');
-                        var actor1_dob = $(result['results'][0]).find('div#name-born-info a')[1].text + ', ' + $(result['results'][0]).find('div#name-born-info a')[2].text 
+//                        var actor1_dob = $(result['results'][0]).find('div#name-born-info a')[1].text + ', ' + $(result['results'][0]).find('div#name-born-info a')[2].text
+                        var actor1_dob = '';
                         console.log('Variables assigned for actor: ', actor_name1);
                         deferred.resolve(
                             [actor1_pic_url, actor_name1, actor_link1, movies_1, actor1_dob]
