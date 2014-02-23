@@ -326,7 +326,10 @@ angular.module('myApp.controllers', []).
                     $scope.autocomplete1 = typed[0];
                     term = typed[1].trim();
                 }
-
+            }
+            else {
+                $scope.autocomplete1 = "";
+                $scope.autocomplete2 = "";
             }
             term = term.split(" ");
 
