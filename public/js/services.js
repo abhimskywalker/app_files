@@ -7,7 +7,7 @@
 // In this case it is a simple value service.
 angular.module('myApp.services', [])
     .value('version', '0.1')
-    .factory("fetchResponseFactory", function($q, $timeout){
+    .factory("fetchResponseFactory", function($q, $timeout, $http){
         // return promise for response text for the given url
         var getResponseText = function(q_url){
             var deferred = $q.defer();
@@ -48,9 +48,23 @@ angular.module('myApp.services', [])
             return deferred.promise;
         };
 
+        var getRating = function(movie_id){
+            var deferred = $q.defer();
+            console.log('fetching rating: ', movie_id);
+            var API_URL = 'http://www.omdbapi.com/?i=';
+            var url = API_URL+movie_id;
+            deferred.resolve(
+                $http.get(url).success(function(res) {
+                    return res;
+                })
+            );
+            return deferred.promise;
+        };
+
         return {
             getResponseText : getResponseText,
-            getActorMovies : getActorMovies
+            getActorMovies : getActorMovies,
+            getRating : getRating
         };
     })
 

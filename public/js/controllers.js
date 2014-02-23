@@ -138,12 +138,13 @@ angular.module('myApp.controllers', []).
                     if ($scope.movies_1[i]['movie_id'] === $scope.movies_2[j]['movie_id']) {
                         var m1 = $scope.movies_1[i];
                         var m2 = $scope.movies_2[j];
-                        intersection_movies.push({'movie_id':m1['movie_id'],'movie_name':m1['movie_name'],'year':m1['year'],'a1_role':m1['role'],'a2_role':m2['role'],'link':m1['link']});
+                        intersection_movies.push({'movie_id':m1['movie_id'],'movie_name':m1['movie_name'],'year':m1['year'],'a1_role':m1['role'],'a2_role':m2['role'],'link':m1['link'], 'rating':'', 'poster':''});
                     };
 
                     if (i===0 && j===0) {
                         usSpinnerService.stop('spinner-1');
                         $scope.movies = intersection_movies;
+                        $scope.get_rating();
                     };
                 };
             };
@@ -371,5 +372,18 @@ angular.module('myApp.controllers', []).
         }
 
 
+        $scope.get_rating = function(){
+            for (var i = 0; i < $scope.movies.length; i++) {
+                fetchResponseFactory.getRating($scope.movies[i]['movie_id'])
+                    .then(function(json_obj){
+                        var res = JSON.parse(json_obj["data"]);
+                        var rating = res['imdbRating'];
+                        var poster = res['Poster'];
+                        console.log(rating, poster);
+//                        $scope.movies[i]['rating'] = rating;
+//                        $scope.movies[i]['poster'] = poster;
+                    })
+            }
+        }
     })
 ;
