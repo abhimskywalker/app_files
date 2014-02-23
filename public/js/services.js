@@ -50,7 +50,7 @@ angular.module('myApp.services', [])
 
         var getRating = function(movie_id){
             var deferred = $q.defer();
-            console.log('fetching rating: ', movie_id);
+//            console.log('fetching rating: ', movie_id);
             var API_URL = 'http://www.omdbapi.com/?i=';
             var url = API_URL+movie_id;
             deferred.resolve(
