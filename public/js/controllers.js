@@ -34,6 +34,7 @@ angular.module('myApp.controllers', []).
             $scope.actor1_pic_url = '';
             $scope.actor_name1 = '';
             $scope.actor_link1 = '';
+            $scope.actor1_dob = '';
 
             $scope.actor2 = '';
             $scope.q_url2 = '';
@@ -41,6 +42,8 @@ angular.module('myApp.controllers', []).
             $scope.actor2_pic_url = '';
             $scope.actor_name2 = '';
             $scope.actor_link2 = '';
+            $scope.actor2_dob = '';
+            $scope.temp_var = '';
         }
 
 
@@ -106,9 +109,10 @@ angular.module('myApp.controllers', []).
                     .then(function(result){
                         movies_1 = $scope.parse_main_page(result['results'][0], actor_link1);
                         var actor1_pic_url = $(result['results'][0]).find('#name-poster')[0].getAttribute('src');
+                        var actor1_dob = $(result['results'][0]).find('div#name-born-info a')[1].text + ', ' + $(result['results'][0]).find('div#name-born-info a')[2].text 
                         console.log('Variables assigned for actor: ', actor_name1);
                         deferred.resolve(
-                            [actor1_pic_url, actor_name1, actor_link1, movies_1]
+                            [actor1_pic_url, actor_name1, actor_link1, movies_1, actor1_dob]
                         );
                     }, function(reason){
                         console.log(reason);
@@ -162,6 +166,7 @@ angular.module('myApp.controllers', []).
             $scope.actor_name1 = list_obj[1];
             $scope.actor_link1 = list_obj[2];
             $scope.movies_1 = list_obj[3];
+            $scope.actor1_dob = list_obj[4];
         }
 
         $scope.assign_actor2 = function(list_obj) {
@@ -170,6 +175,7 @@ angular.module('myApp.controllers', []).
             $scope.actor_name2 = list_obj[1];
             $scope.actor_link2 = list_obj[2];
             $scope.movies_2 = list_obj[3];
+            $scope.actor2_dob = list_obj[4];
         }
 
 
@@ -256,7 +262,7 @@ angular.module('myApp.controllers', []).
                         console.log('From th on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
                         if ($scope.list_obj1.$getIndex().length > 0){
                             console.log('Got info from firebase for:',$scope.actor1)
-                            var temp = [$scope.list_obj1[0],$scope.list_obj1[1],$scope.list_obj1[2],$scope.list_obj1[3]]
+                            var temp = [$scope.list_obj1[0],$scope.list_obj1[1],$scope.list_obj1[2],$scope.list_obj1[3],$scope.list_obj1[4]]
                             $scope.assign_actor1(temp);
                             $scope.actors_db[$scope.actor1] = temp;
                             $scope.check_to_call_intersection($scope.q_url1,1);
@@ -274,7 +280,7 @@ angular.module('myApp.controllers', []).
                         console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)
                         if ($scope.list_obj2.$getIndex().length > 0){
                             console.log('Got info from firebase for:',$scope.actor2)
-                            var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3]]
+                            var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3],$scope.list_obj1[3]]
                             $scope.assign_actor2(temp);
                             $scope.actors_db[$scope.actor2] = temp;
                             $scope.check_to_call_intersection($scope.q_url2,2);

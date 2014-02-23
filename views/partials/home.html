@@ -8,7 +8,7 @@
               <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma"
               keyboard-poster post-function="ac_search"
               typeahead="address for address in titles" typeahead-on-select="add_comma()"
-              typeahead-min-length="1" typeahead-wait-ms="10">
+              typeahead-min-length="1" typeahead-wait-ms="10" autocomplete="off">
           </div>
           <button type="submit" analytics-on="click" analytics-event="Search Initiated" analytics-category="search for actors" analytics-label="Actors searched for: {{actor_names}}" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
           <!-- <div class="input-group">
@@ -28,11 +28,13 @@
               <div class="col-sm-3 col-xs-3">
                   <a href="http://www.imdb.com{{actor_link1}}"><img style="max-height:200px;" src="{{actor1_pic_url}}" class="img-circle"></a>
                   <h5 class="reveal">{{actor_name1}}</h5>
+                  <h5 class="reveal">{{actor1_dob}}</h5>
               </div>
               <div class="col-sm-6 col-xs-6"></div>
               <div class="col-sm-3 col-xs-3">
                   <a href="http://www.imdb.com{{actor_link2}}"><img  style="max-height:200px;" src="{{actor2_pic_url}}" class="img-circle"></a>
                   <h5 class="reveal">{{actor_name2}}</h5>
+                  <h5 class="reveal">{{actor2_dob}}</h5>
               </div>
           </div>
       </div>
