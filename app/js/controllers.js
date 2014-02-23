@@ -12,6 +12,7 @@ angular.module('myApp.controllers', []).
         $scope.autocomplete2 = '';
         $scope.titles = [];
         $scope.auto_comma = false;
+        $scope.autocomplete_dict = {};
 
         var ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
         $scope.moviedb = $firebase(ref);
@@ -286,7 +287,7 @@ angular.module('myApp.controllers', []).
 
 
 
-        $scope.title_parser = function(json_obj) {
+        $scope.title_parser = function(term, json_obj) {
 
             var titles = json_obj["d"];
             var result = [];
@@ -294,13 +295,17 @@ angular.module('myApp.controllers', []).
             for (var i = 0; i < titles.length; i++) {
                 var obj = titles[i];
                 if ('s' in obj) {
-                    if (titles[i]["s"].split(",")[0] in {'Actress':1, 'Actor':1, 'Director':1 }) {
+                    if (titles[i]["q"] in {'TV movie':1, 'video':1, 'feature':1, 'TV documentary':1, 'TV series':1 }) {
+                        continue;
+                    }
+                    else {
                         result.push(titles[i]['l']);
                     }
                 }
             }
-            $scope.titles = result;
+            $scope.titles = result.splice(0,4);
             $scope.$apply();
+            $scope.autocomplete_dict[term] = $scope.titles;
         }
 
 
@@ -309,11 +314,11 @@ angular.module('myApp.controllers', []).
 
             if (term.indexOf(',') > -1){
                 var typed = term.trim().split(",");
-                if ($scope.autocomplete1 == typed[0].trim()) {
+                if ($scope.autocomplete1 == typed[0].trim() && $scope.autocomplete1 != "") {
                     $scope.autocomplete2 = "";
                     term = typed[1].trim();
                 }
-                else if ($scope.autocomplete2 == typed[1].trim()){
+                else if ($scope.autocomplete2 == typed[1].trim() && $scope.autocomplete2 != ""){
                     $scope.autocomplete1 = "";
                     term = typed[0].trim();
                 }
@@ -332,9 +337,16 @@ angular.module('myApp.controllers', []).
                 term = term.join("_");
             }
 
-            if (term) {
-                eval("window.imdb$"+term+" = function(d){$scope.title_parser(d)};");
-                AutoComplete.autocomplete_search(term.toLowerCase());
+            if (term.length > 0) {
+                if (term in $scope.autocomplete_dict) {
+                    $scope.titles = $scope.autocomplete_dict[term];
+                    $scope.$apply();
+                }
+                else {
+                    eval("window.imdb$"+term+" = function(d){$scope.title_parser(term, d)};");
+                    AutoComplete.autocomplete_search(term.toLowerCase());
+                }
+
             }
         }
 

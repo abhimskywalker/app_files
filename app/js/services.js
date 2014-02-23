@@ -58,6 +58,8 @@ angular.module('myApp.services', [])
     .service('AutoComplete', function($q, $http){
         var API_URL = 'http://sg.media-imdb.com/suggests/';
         this.autocomplete_search = function(term) {
-            $http.jsonp(API_URL+term[0]+"/"+term+".json");
+            var url = API_URL+term[0]+"/"+term+".json";
+//            console.log(url);
+            $http.jsonp(url);
         }
     });

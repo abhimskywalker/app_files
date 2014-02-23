@@ -8,7 +8,7 @@
               <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma"
               keyboard-poster post-function="ac_search"
               typeahead="address for address in titles" typeahead-on-select="add_comma()"
-              typeahead-min-length="2" typeahead-wait-ms="50">
+              typeahead-min-length="1" typeahead-wait-ms="10">
           </div>
           <button type="submit" analytics-on="click" analytics-event="Search Initiated" analytics-category="search for actors" analytics-label="Actors searched for: {{actor_names}}" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
           <!-- <div class="input-group">
