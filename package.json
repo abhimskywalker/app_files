@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/angular/angular-seed",
   "version": "0.1.0",
+  "private": true,
   "main": "scripts/web-server.js",
   "directories": {
     "test": "test"
