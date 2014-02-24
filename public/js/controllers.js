@@ -108,9 +108,13 @@ angular.module('myApp.controllers', []).
                 fetchResponseFactory.getActorMovies(actor_link1)
                     .then(function(result){
                         movies_1 = $scope.parse_main_page(result['results'][0], actor_link1);
-                        var actor1_pic_url = $(result['results'][0]).find('#name-poster')[0].getAttribute('src');
-                        try
-                        {
+                        try {
+                            var actor1_pic_url = $(result['results'][0]).find('#name-poster')[0].getAttribute('src');
+                        }
+                        catch(err) {
+                            var actor1_pic_url = '';
+                        }
+                        try {
                             var actor1_dob_md = $(result['results'][0]).find('div#name-born-info a')[1].text;
                             var actor1_dob_y = $(result['results'][0]).find('div#name-born-info a')[2].text;
                             if(actor1_dob_md.trim().length > 12){
