@@ -307,7 +307,7 @@ angular.module('myApp.controllers', []).
                     });
                     $scope.populate_actor($scope.q_url2, 2, 0);
                 }
-            }, 60);
+            }, 5);
 
         }
 
@@ -337,46 +337,56 @@ angular.module('myApp.controllers', []).
 
 
         $scope.ac_search = function(term) {
-
-            if (term.indexOf(',') > -1){
-                var typed = term.trim().split(",");
-                if ($scope.autocomplete1 == typed[0].trim() && $scope.autocomplete1 != "") {
-                    $scope.autocomplete2 = "";
-                    term = typed[1].trim();
-                }
-                else if ($scope.autocomplete2 == typed[1].trim() && $scope.autocomplete2 != ""){
-                    $scope.autocomplete1 = "";
-                    term = typed[0].trim();
-                }
-                else if (!$scope.auto_comma) {
-                    $scope.autocomplete1 = typed[0];
-                    term = typed[1].trim();
-                }
-            }
-            else {
-                $scope.autocomplete1 = "";
-                $scope.autocomplete2 = "";
-            }
-            term = term.split(" ");
-
-            if (term[1] == ""){
-                term = term[0]
-            }
-            else {
-                term = term.join("_");
-            }
-
-            if (term.length > 0) {
-                if (term in $scope.autocomplete_dict) {
-                    $scope.titles = $scope.autocomplete_dict[term];
-                    $scope.$apply();
+            if (term != $scope.autocomplete1 + ", " + $scope.autocomplete2) {
+                if (term.indexOf(',') > -1){
+                    var typed = term.trim().split(",");
+                    if ($scope.autocomplete1 == typed[0].trim() && $scope.autocomplete1 != "") {
+                        $scope.autocomplete2 = "";
+                        term = typed[1].trim();
+                    }
+                    else if ($scope.autocomplete2 == typed[1].trim() && $scope.autocomplete2 != ""){
+                        $scope.autocomplete1 = "";
+                        term = typed[0].trim();
+                    }
+                    else if (!$scope.auto_comma) {
+                        $scope.autocomplete1 = typed[0].trim();
+                        term = typed[1].trim();
+                    }
                 }
                 else {
-                    eval("window.imdb$"+term+" = function(d){$scope.title_parser(term, d)};");
-                    AutoComplete.autocomplete_search(term.toLowerCase());
+                    var index2 = term.indexOf($scope.autocomplete2);
+                    if (index2 > -1 && $scope.autocomplete2 != "") {
+                        term = term.substr(0,index2).trim();
+                    }
+                    else {
+                        $scope.autocomplete2 = "";
+                    }
+                    $scope.autocomplete1 = "";
                 }
 
+                term = term.split(" ");
+
+                if (term[1] == ""){
+                    term = term[0]
+                }
+                else {
+                    term = term.join("_");
+                }
+
+                if (term.length > 0) {
+                    if (term in $scope.autocomplete_dict) {
+                        $scope.titles = $scope.autocomplete_dict[term];
+                        $scope.$apply();
+                    }
+                    else {
+                        eval("window.imdb$"+term+" = function(d){$scope.title_parser(term, d)};");
+                        AutoComplete.autocomplete_search(term.toLowerCase());
+                    }
+                }
             }
+            return $timeout(function() {
+                return $scope.titles;
+            },70);
         }
 
 
@@ -393,7 +403,7 @@ angular.module('myApp.controllers', []).
                 document.getElementById("actor-names").value = $scope.autocomplete1 + ", " + $scope.autocomplete2;
                 $scope.auto_comma = true;
                 $scope.actor_names = $scope.autocomplete1 + ", " + $scope.autocomplete2;
-            },50) ;
+            },2) ;
         }
 
 
