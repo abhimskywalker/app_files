@@ -104,8 +104,9 @@ angular.module('myApp.controllers', []).
                     var movies_1 = [];
                     fetchResponseFactory.getActorMovies(actor_link1)
                         .then(function(result){
+                            result = result['results'][0];
                             if (result) {
-                                var page_source = result['results'][0].split("src=").join("rips=");
+                                var page_source = result.split("src=").join("rips=");
                                 movies_1 = $scope.parse_main_page(page_source, actor_link1);
                                 try {
                                     var actor1_pic_url = $(page_source).find('#name-poster')[0].getAttribute('rips');
