@@ -91,66 +91,67 @@ angular.module('myApp.controllers', []).
 
 
         $scope.get_actor = function(res, url, actor_num, num_try){
-
             var deferred = $q.defer();
-
             if (num_try > 3) {
                 deferred.resolve([]);
             }
-
-            var raw_data1 = res;
-            var actor_name1 = $($(raw_data1).find('table.findList tbody tr')[0]).find('td.result_text a')[0];
-
-            if (actor_name1 != undefined) {
-                actor_name1 = actor_name1.textContent;
-                var actor_link1 = $($(raw_data1).find('table.findList tbody tr')[0]).find('td.result_text a')[0].getAttribute('href');
-                var movies_1 = [];
-                fetchResponseFactory.getActorMovies(actor_link1)
-                    .then(function(result){
-                        movies_1 = $scope.parse_main_page(result['results'][0], actor_link1);
-                        try {
-                            var actor1_pic_url = $(result['results'][0]).find('#name-poster')[0].getAttribute('src');
-                        }
-                        catch(err) {
-                            var actor1_pic_url = '';
-                        }
-                        try {
-                            var actor1_dob_md = $(result['results'][0]).find('div#name-born-info a')[1].text;
-                            var actor1_dob_y = $(result['results'][0]).find('div#name-born-info a')[2].text;
-                            if(actor1_dob_md.trim().length > 12){
-                                actor1_dob_md = ''
+            if (res) {
+                var raw_data1 = res.split("src=").join("rips=");
+                var actor_name1 = $($(raw_data1).find('table.findList tbody tr')[0]).find('td.result_text a')[0];
+                if (actor_name1) {
+                    actor_name1 = actor_name1.textContent;
+                    var actor_link1 = $($(raw_data1).find('table.findList tbody tr')[0]).find('td.result_text a')[0].getAttribute('href');
+                    var movies_1 = [];
+                    fetchResponseFactory.getActorMovies(actor_link1)
+                        .then(function(result){
+                            if (result) {
+                                var page_source = result['results'][0].split("src=").join("rips=");
+                                movies_1 = $scope.parse_main_page(page_source, actor_link1);
+                                try {
+                                    var actor1_pic_url = $(page_source).find('#name-poster')[0].getAttribute('rips');
+                                }
+                                catch(err) {
+                                    var actor1_pic_url = '';
+                                }
+                                try {
+                                    var actor1_dob_md = $(page_source).find('div#name-born-info a')[1].text;
+                                    var actor1_dob_y = $(page_source).find('div#name-born-info a')[2].text;
+                                    if(actor1_dob_md.trim().length > 12){
+                                        actor1_dob_md = ''
+                                    }
+                                    if(actor1_dob_y.trim().length > 4){
+                                        actor1_dob_y = ''
+                                    }
+                                    var actor1_dob = actor1_dob_md + ' ' + actor1_dob_y;
+                                }
+                                catch(err)
+                                {
+                                    var actor1_dob = '';
+                                }
+//                                console.log('Variables assigned for actor: ', actor_name1);
+                                deferred.resolve(
+                                    [actor1_pic_url, actor_name1, actor_link1, movies_1, actor1_dob]
+                                );
                             }
-                            if(actor1_dob_y.trim().length > 4){
-                                actor1_dob_y = ''
-                            }
-                            var actor1_dob = actor1_dob_md + ' ' + actor1_dob_y;
-                        }
-                        catch(err)
-                        {
-                            var actor1_dob = '';
-                        }
-                        console.log('Variables assigned for actor: ', actor_name1);
-                        deferred.resolve(
-                            [actor1_pic_url, actor_name1, actor_link1, movies_1, actor1_dob]
-                        );
-                    }, function(reason){
-                        console.log(reason);
-                });
-            }
-            else{
-                console.log('actor_name1: ', actor_name1);
-                console.log('trying again');
-                $scope.populate_actor(url, actor_num, num_try+1);
-                deferred.resolve([]);
-            }
 
+                        }, function(reason){
+                            console.log(reason);
+                    });
+                }
+            }
+        else{
+//            console.log('actor_name1: ', actor_name1);
+//            console.log('trying again');
+            $scope.populate_actor(url, actor_num, num_try+1);
+            deferred.resolve([]);
+        }
             return deferred.promise;
         }
 
 
         $scope.call_intersection = function() {
 
-            console.log('intersection calculation initiated');
+//            console.log('intersection calculation initiated');
             $analytics.eventTrack('Search Pair', {  category: 'Actor Pair:(' + $scope.actor_name1 + ',' + $scope.actor_name2 + ')', label: 'Actors:' + $scope.actor_name1 + ',' + $scope.actor_name2 });
             $analytics.eventTrack('Search Actor', {  category: 'Actor:(' + $scope.actor_name1 + ')', label: 'Actor:' + $scope.actor_name1 });
             $analytics.eventTrack('Search Actor', {  category: 'Actor:(' + $scope.actor_name2 + ')', label: 'Actor:' + $scope.actor_name2 });
@@ -245,6 +246,7 @@ angular.module('myApp.controllers', []).
                                 $scope.check_to_call_intersection(url,3);
                             }
                         });
+
                 }, function(reason){
                     console.log(reason);
                     // TODO: retry in case of failure first time...
