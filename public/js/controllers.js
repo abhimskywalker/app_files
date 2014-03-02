@@ -168,6 +168,7 @@ angular.module('myApp.controllers', []).
                         usSpinnerService.stop('spinner-1');
                         $scope.movies = intersection_movies;
                         $scope.get_rating();
+//                        $scope.get_picture($scope.actor1);
                     };
                 };
             };
@@ -330,13 +331,14 @@ angular.module('myApp.controllers', []).
                 }
             }
             $scope.titles = result.splice(0,4);
-            $scope.$apply();
+            $scope.ac_reload_flag = true;
             $scope.autocomplete_dict[term] = $scope.titles;
         }
 
 
 
         $scope.ac_search = function(term) {
+            $scope.ac_reload_flag = false;
             if (term != $scope.autocomplete1 + ", " + $scope.autocomplete2) {
                 if (term.indexOf(',') > -1){
                     var typed = term.trim().split(",");
@@ -376,7 +378,7 @@ angular.module('myApp.controllers', []).
                 if (term.length > 0) {
                     if (term in $scope.autocomplete_dict) {
                         $scope.titles = $scope.autocomplete_dict[term];
-                        $scope.$apply();
+                        $scope.ac_reload_flag = true;
                     }
                     else {
                         eval("window.imdb$"+term+" = function(d){$scope.title_parser(term, d)};");
@@ -384,9 +386,25 @@ angular.module('myApp.controllers', []).
                     }
                 }
             }
-            return $timeout(function() {
-                return $scope.titles;
-            },70);
+
+            var timeout_fn = function(counter) {
+                if (counter < 20) {
+                    counter++;
+                    return $timeout(function() {
+                        if ($scope.ac_reload_flag) {
+                            return $scope.titles;
+                        }
+                        else {
+                            return timeout_fn(counter);
+                        }
+                    },50);
+                }
+                else {
+                    return $scope.titles;
+                }
+            }
+
+            return timeout_fn(0);
         }
 
 
@@ -419,6 +437,18 @@ angular.module('myApp.controllers', []).
 //                        $scope.movies[i]['poster'] = poster;
                     })
             }
+        }
+
+        $scope.get_picture = function(actor){
+//            for (var i = 0; i < $scope.movies.length; i++) {
+                fetchResponseFactory.getPicture(actor)
+                    .then(function(json_obj){
+
+                        console.log(json_obj);
+//                        $scope.movies[i]['rating'] = rating;
+//                        $scope.movies[i]['poster'] = poster;
+                    })
+//            }
         }
     })
 ;

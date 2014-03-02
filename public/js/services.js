@@ -52,7 +52,7 @@ angular.module('myApp.services', [])
             var deferred = $q.defer();
 //            console.log('fetching rating: ', movie_id);
             var API_URL = 'http://www.omdbapi.com/?i=';
-            var url = API_URL+movie_id;
+            var url = API_URL + movie_id;
             deferred.resolve(
                 $http.get(url).success(function(res) {
                     return res;
@@ -61,10 +61,27 @@ angular.module('myApp.services', [])
             return deferred.promise;
         };
 
+        var getPicture = function(name) {
+            var deferred = $q.defer();
+            var API_URL = "http://en.wikipedia.org/w/api.php?action=opensearch&limit=5&format=xml&namespace=0&search=";
+            var url = API_URL + name.toLowerCase().replace(" ","%20") + "?callback=picture_CALLBACK";
+            var picture_CALLBACK = function(res) {
+                console.log(res);
+            }
+            $http.jsonp(url);
+            deferred.resolve( function() {
+                return "abc"
+            });
+
+
+            return deferred.promise;
+        }
+
         return {
             getResponseText : getResponseText,
             getActorMovies : getActorMovies,
-            getRating : getRating
+            getRating : getRating,
+            getPicture: getPicture
         };
     })
 
