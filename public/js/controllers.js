@@ -20,7 +20,7 @@ angular.module('myApp.controllers', []).
             $scope.moviedb = $firebase($scope.ref);
             var random = $scope.moviedb.$child('initiate');
             $scope.moviedb.$on('loaded',function(){
-//            console.log('Firebase initiated:',random);
+            console.log('Firebase initiated:',random);
             });
         }
 
@@ -307,7 +307,7 @@ angular.module('myApp.controllers', []).
                     $scope.moviedb.$on('loaded',function(){
 //                        console.log('From the on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
                         if ($scope.list_obj1.$getIndex().length > 0){
-//                            console.log('Got info from firebase for:',$scope.actor1)
+                            console.log('Got info from firebase for:',$scope.actor1)
                             var temp = [$scope.list_obj1[0], $scope.list_obj1[1], $scope.list_obj1[2], $scope.list_obj1[3], $scope.list_obj1[4]];
                             $scope.assign_actor1(temp);
                             $scope.actors_db[$scope.actor1] = temp;
@@ -328,8 +328,8 @@ angular.module('myApp.controllers', []).
                     $scope.moviedb.$on('loaded',function(){
 //                        console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)
                         if ($scope.list_obj2.$getIndex().length > 0){
-//                            console.log('Got info from firebase for:',$scope.actor2)
-                            var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3],$scope.list_obj1[4]]
+                            console.log('Got info from firebase for:',$scope.actor2)
+                            var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3],$scope.list_obj2[4]]
                             $scope.assign_actor2(temp);
                             $scope.actors_db[$scope.actor2] = temp;
                             $scope.check_to_call_intersection($scope.q_url2,2);
