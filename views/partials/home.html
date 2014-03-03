@@ -45,8 +45,16 @@
           <table class="table table-hover">
               <tbody>
                   <tr ng-repeat="movie in movies | unique:'movie_id' | orderBy:'-year'" class="slide-reveal">
-                      <th><a ng-href="{{movie.link}}" style="color: #000;">{{movie.movie_name}}</a></th>
-                      <th><p><small class="pull-right" style="margin-top: 0px;">{{movie.year}}</small></p></th>
+                      <th>
+                          <a ng-href="{{movie.link}}" style="color: #000;">{{movie.movie_name}}
+                              <small ng-show="movie.year" style="margin-top: 0px;"> ({{movie.year}})</small>
+                          </a>
+                      </th>
+                      <th>
+                          <p class="pull-right">{{movie.rating}}
+                              <small ng-show="movie.votes" style="margin-top: 0px;"> ({{movie.votes}} votes)</small>
+                          </p>
+                      </th>
                   </tr>
               </tbody>
           </table>

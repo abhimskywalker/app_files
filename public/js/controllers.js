@@ -32,7 +32,6 @@ angular.module('myApp.controllers', []).
             $scope.q_url1 = '';
             $scope.movies_1 = [];
             $scope.actor1_pic_url = '';
-            $scope.actor1_pic_url_g = '';
             $scope.actor_name1 = '';
             $scope.actor_link1 = '';
             $scope.actor1_dob = '';
@@ -41,7 +40,6 @@ angular.module('myApp.controllers', []).
             $scope.q_url2 = '';
             $scope.movies_2 = [];
             $scope.actor2_pic_url = '';
-            $scope.actor2_pic_url_g = '';
             $scope.actor_name2 = '';
             $scope.actor_link2 = '';
             $scope.actor2_dob = '';
@@ -110,12 +108,14 @@ angular.module('myApp.controllers', []).
                             if (result) {
                                 var page_source = result.split("src=").join("rips=");
                                 movies_1 = $scope.parse_main_page(page_source, actor_link1);
-                                try {
-                                    var actor1_pic_url = $(page_source).find('#name-poster')[0].getAttribute('rips');
-                                }
-                                catch(err) {
-                                    var actor1_pic_url = '';
-                                }
+//                                try {
+//                                    var actor1_pic_url = $(page_source).find('#name-poster')[0].getAttribute('rips');
+//                                }
+//                                catch(err) {
+//                                    var actor1_pic_url = '';
+//                                }
+                                var actor1_pic_url = $scope.get_actor_pic_url(actor_num);
+
                                 try {
                                     var actor1_dob_md = $(page_source).find('div#name-born-info a')[1].text;
                                     var actor1_dob_y = $(page_source).find('div#name-born-info a')[2].text;
@@ -166,7 +166,7 @@ angular.module('myApp.controllers', []).
                         if ($scope.movies_1[i]['movie_id'] === $scope.movies_2[j]['movie_id']) {
                             var m1 = $scope.movies_1[i];
                             var m2 = $scope.movies_2[j];
-                            intersection_movies.push({'movie_id':m1['movie_id'],'movie_name':m1['movie_name'],'year':m1['year'],'a1_role':m1['role'],'a2_role':m2['role'],'link':m1['link'], 'rating':'', 'poster':''});
+                            intersection_movies.push({'movie_id':m1['movie_id'],'movie_name':m1['movie_name'],'year':m1['year'],'a1_role':m1['role'],'a2_role':m2['role'],'link':m1['link'], 'rating':'', 'votes':''});
                         };
 
                         if (i===0 && j===0) {
@@ -204,18 +204,19 @@ angular.module('myApp.controllers', []).
         }
 
 
-        $scope.check_to_call_intersection = function(url,actor_num){
-            if ($scope.complete1 == true && $scope.complete2 == true) {
-                $scope.call_intersection();
-            }
-            else if (actor_num == 1){
+        $scope.check_to_call_intersection = function(url, actor_num){
+//            if ($scope.complete1 == true && $scope.complete2 == true) {
+//                $scope.call_intersection();
+//            }
+            if (actor_num == 1){
                 $scope.complete1 = true;
                 console.log('changing the flag', url, 'done for 1');
             }
-            else if (actor_num == 2){
+            else {
                 $scope.complete2 = true;
                 console.log('changing the flag', url, 'done for 2');
             }
+
             if ($scope.complete1 == true && $scope.complete2 == true) {
                 $scope.call_intersection();
             }
@@ -235,7 +236,7 @@ angular.module('myApp.controllers', []).
                                         $scope.assign_actor1(list_obj);
                                         $scope.actors_db[$scope.actor1] = list_obj;
                                         $scope.moviedb.$child($scope.cleanName($scope.actor1)).$set(list_obj);
-                                        $scope.check_to_call_intersection(url,1);
+                                        $scope.check_to_call_intersection(url, 1);
                                     }
                                 }
                                 else {
@@ -244,10 +245,10 @@ angular.module('myApp.controllers', []).
                                         $scope.assign_actor2(list_obj);
                                         $scope.actors_db[$scope.actor2] = list_obj;
                                         $scope.moviedb.$child($scope.cleanName($scope.actor2)).$set(list_obj);
-                                        $scope.check_to_call_intersection(url,2);
+                                        $scope.check_to_call_intersection(url, 2);
                                     }
                                 }
-                                $scope.check_to_call_intersection(url,3);
+//                                $scope.check_to_call_intersection(url,3);
                             }
                         });
 
@@ -271,10 +272,10 @@ angular.module('myApp.controllers', []).
             $timeout(function() {
                 usSpinnerService.spin('spinner-1');
                 $scope.initiate_vars();
-                console.log('Yay Search got clicked for:' + $scope.actor_names );
+//                console.log('Yay Search got clicked for:' + $scope.actor_names );
 
-                fetchResponseFactory.getPicture($scope.autocomplete1, 1);
-                fetchResponseFactory.getPicture($scope.autocomplete2, 2);
+
+
 
                 $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
                 $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
@@ -285,25 +286,29 @@ angular.module('myApp.controllers', []).
 
                 if ($scope.actor1 in $scope.actors_db) {
                     $scope.assign_actor1($scope.actors_db[$scope.actor1]);
-                    $scope.check_to_call_intersection($scope.q_url1,1);
+                    $scope.check_to_call_intersection($scope.q_url1, 1);
                 }
                 else {
                     $scope.moviedb.$on('loaded',function(){
-                        console.log('From th on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
+//                        console.log('From the on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
                         if ($scope.list_obj1.$getIndex().length > 0){
                             console.log('Got info from firebase for:',$scope.actor1)
-                            var temp = [$scope.list_obj1[0],$scope.list_obj1[1],$scope.list_obj1[2],$scope.list_obj1[3],$scope.list_obj1[4]]
+                            var temp = [$scope.list_obj1[0], $scope.list_obj1[1], $scope.list_obj1[2], $scope.list_obj1[3], $scope.list_obj1[4]];
                             $scope.assign_actor1(temp);
                             $scope.actors_db[$scope.actor1] = temp;
                             $scope.check_to_call_intersection($scope.q_url1,1);
                         }
+                        else {
+                            $scope.populate_actor($scope.q_url1, 1, 0);
+                            fetchResponseFactory.getPicture($scope.autocomplete1, 1);
+                        }
                     });
-                    $scope.populate_actor($scope.q_url1, 1, 0);
+//
                 }
 
                 if ($scope.actor2 in $scope.actors_db) {
                     $scope.assign_actor2($scope.actors_db[$scope.actor2]);
-                    $scope.check_to_call_intersection($scope.q_url2,2);
+                    $scope.check_to_call_intersection($scope.q_url2, 2);
                 }
                 else {
                     $scope.moviedb.$on('loaded',function(){
@@ -315,8 +320,11 @@ angular.module('myApp.controllers', []).
                             $scope.actors_db[$scope.actor2] = temp;
                             $scope.check_to_call_intersection($scope.q_url2,2);
                         }
+                        else {
+                            $scope.populate_actor($scope.q_url2, 2, 0);
+                            fetchResponseFactory.getPicture($scope.autocomplete2, 2);
+                        }
                     });
-                    $scope.populate_actor($scope.q_url2, 2, 0);
                 }
             }, 5);
 
@@ -436,16 +444,30 @@ angular.module('myApp.controllers', []).
 
 
         $scope.get_rating = function(){
+            $scope.rating_dict = {};
+            var size = 0;
             for (var i = 0; i < $scope.movies.length; i++) {
                 fetchResponseFactory.getRating($scope.movies[i]['movie_id'])
                     .then(function(json_obj){
                         var res = JSON.parse(json_obj["data"]);
                         var rating = res['imdbRating'];
-                        var poster = res['Poster'];
-                        console.log(rating, poster);
+                        var votes = res['imdbVotes'];
+                        var movie_id = res["imdbID"];
+                        $scope.rating_dict[movie_id] = [rating, votes];
+                        size++;
+                        if (size == $scope.movies.length) {
+                            for (var j=0; j<size; j++) {
+                                $scope.movies[j]['rating'] =   $scope.rating_dict[$scope.movies[j]['movie_id']][0];
+                                $scope.movies[j]['votes'] =   $scope.rating_dict[$scope.movies[j]['movie_id']][1];
+                            }
+                        }
+
+//                        var poster = res['Poster'];
+                        console.log(i, rating, votes);
 //                        $scope.movies[i]['rating'] = rating;
 //                        $scope.movies[i]['poster'] = poster;
                     })
+
             }
         }
 
@@ -466,11 +488,22 @@ angular.module('myApp.controllers', []).
 
 
         window.picture_CALLBACK1 = function(res) {
-            $scope.actor1_pic_url_g = $scope.get_picture(res);
+            $scope.actor1_pic_url = $scope.get_picture(res);
         }
 
         window.picture_CALLBACK2 = function(res) {
-            $scope.actor2_pic_url_g = $scope.get_picture(res);
+            $scope.actor2_pic_url = $scope.get_picture(res);
         }
+
+        $scope.get_actor_pic_url = function(actor_num) {
+            if (actor_num == 1) {
+                return $scope.actor1_pic_url;
+            }
+            else {
+                return $scope.actor2_pic_url;
+            }
+        }
+
+
     })
 ;
