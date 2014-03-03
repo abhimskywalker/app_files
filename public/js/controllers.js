@@ -18,7 +18,7 @@ angular.module('myApp.controllers', []).
         $scope.moviedb = $firebase(ref);
         var random = $scope.moviedb.$child('initiate');
         $scope.moviedb.$on('loaded',function(){
-            console.log('Firebase initiated:',random);
+//            console.log('Firebase initiated:',random);
         });
 
 
@@ -186,7 +186,7 @@ angular.module('myApp.controllers', []).
         }
 
         $scope.assign_actor1 = function(list_obj) {
-            console.log('Assigning for actor 1')
+//            console.log('Assigning for actor 1')
             $scope.actor1_pic_url = list_obj[0];
             $scope.actor_name1 = list_obj[1];
             $scope.actor_link1 = list_obj[2];
@@ -195,7 +195,7 @@ angular.module('myApp.controllers', []).
         }
 
         $scope.assign_actor2 = function(list_obj) {
-            console.log('Assigning for actor 2')
+//            console.log('Assigning for actor 2')
             $scope.actor2_pic_url = list_obj[0];
             $scope.actor_name2 = list_obj[1];
             $scope.actor_link2 = list_obj[2];
@@ -210,11 +210,11 @@ angular.module('myApp.controllers', []).
 //            }
             if (actor_num == 1){
                 $scope.complete1 = true;
-                console.log('changing the flag', url, 'done for 1');
+//                console.log('changing the flag', url, 'done for 1');
             }
             else {
                 $scope.complete2 = true;
-                console.log('changing the flag', url, 'done for 2');
+//                console.log('changing the flag', url, 'done for 2');
             }
 
             if ($scope.complete1 == true && $scope.complete2 == true) {
@@ -232,7 +232,7 @@ angular.module('myApp.controllers', []).
                             if (list_obj.length > 0) {
                                 if (actor_num == 1) {
                                     if ($scope.actor_name1 == list_obj[1] || $scope.actor_name1 == '') {
-                                        console.log('Actor 1 updated');
+//                                        console.log('Actor 1 updated');
                                         $scope.assign_actor1(list_obj);
                                         $scope.actors_db[$scope.actor1] = list_obj;
                                         $scope.moviedb.$child($scope.cleanName($scope.actor1)).$set(list_obj);
@@ -241,7 +241,7 @@ angular.module('myApp.controllers', []).
                                 }
                                 else {
                                     if ($scope.actor_name2 == list_obj[1] || $scope.actor_name2 == '') {
-                                        console.log('Actor 2 updated');
+//                                        console.log('Actor 2 updated');
                                         $scope.assign_actor2(list_obj);
                                         $scope.actors_db[$scope.actor2] = list_obj;
                                         $scope.moviedb.$child($scope.cleanName($scope.actor2)).$set(list_obj);
@@ -288,7 +288,7 @@ angular.module('myApp.controllers', []).
                     $scope.moviedb.$on('loaded',function(){
 //                        console.log('From the on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
                         if ($scope.list_obj1.$getIndex().length > 0){
-                            console.log('Got info from firebase for:',$scope.actor1)
+//                            console.log('Got info from firebase for:',$scope.actor1)
                             var temp = [$scope.list_obj1[0], $scope.list_obj1[1], $scope.list_obj1[2], $scope.list_obj1[3], $scope.list_obj1[4]];
                             $scope.assign_actor1(temp);
                             $scope.actors_db[$scope.actor1] = temp;
@@ -308,9 +308,9 @@ angular.module('myApp.controllers', []).
                 }
                 else {
                     $scope.moviedb.$on('loaded',function(){
-                        console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)
+//                        console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)
                         if ($scope.list_obj2.$getIndex().length > 0){
-                            console.log('Got info from firebase for:',$scope.actor2)
+//                            console.log('Got info from firebase for:',$scope.actor2)
                             var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3],$scope.list_obj1[3]]
                             $scope.assign_actor2(temp);
                             $scope.actors_db[$scope.actor2] = temp;
@@ -457,11 +457,6 @@ angular.module('myApp.controllers', []).
                                 $scope.movies[j]['votes'] =   $scope.rating_dict[$scope.movies[j]['movie_id']][1];
                             }
                         }
-
-//                        var poster = res['Poster'];
-                        console.log(i, rating, votes);
-//                        $scope.movies[i]['rating'] = rating;
-//                        $scope.movies[i]['poster'] = poster;
                     })
 
             }
