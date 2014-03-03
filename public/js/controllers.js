@@ -524,8 +524,10 @@ angular.module('myApp.controllers', []).
         $scope.sign_off_firebase = function() {
             $timeout(function() {
                 if (new Date().getTime() - $scope.online_status > 120000)  {
-                    $scope.ref.remove();
+                    $scope.moviedb.$off('loaded');
+                    $scope.ref.off();
                     $scope.firebase_flag = 'off';
+                    console.log('firebase down');
                 }
                 else {
                     $scope.sign_off_firebase();
