@@ -191,7 +191,13 @@ angular.module('myApp.controllers', []).
             $scope.actor_name1 = list_obj[1];
             $scope.actor_link1 = list_obj[2];
             $scope.movies_1 = list_obj[3];
-            $scope.actor1_dob = list_obj[4];
+            if (list_obj[4].length > 17) {
+                $scope.actor1_dob = '';
+            }
+            else {
+                $scope.actor1_dob = list_obj[4];
+            }
+
         }
 
         $scope.assign_actor2 = function(list_obj) {
@@ -200,7 +206,12 @@ angular.module('myApp.controllers', []).
             $scope.actor_name2 = list_obj[1];
             $scope.actor_link2 = list_obj[2];
             $scope.movies_2 = list_obj[3];
-            $scope.actor2_dob = list_obj[4];
+            if (list_obj[4].length > 17) {
+                $scope.actor2_dob = '';
+            }
+            else {
+                $scope.actor2_dob = list_obj[4];
+            }
         }
 
 
@@ -447,7 +458,13 @@ angular.module('myApp.controllers', []).
                     .then(function(json_obj){
                         var res = JSON.parse(json_obj["data"]);
                         var rating = res['imdbRating'];
+                        if (rating == "N/A") {
+                            rating = '';
+                        }
                         var votes = res['imdbVotes'];
+                        if (votes == "N/A") {
+                            votes = '';
+                        }
                         var movie_id = res["imdbID"];
                         $scope.rating_dict[movie_id] = [rating, votes];
                         size++;
