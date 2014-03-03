@@ -13,14 +13,18 @@ angular.module('myApp.controllers', []).
         $scope.titles = [];
         $scope.auto_comma = false;
         $scope.autocomplete_dict = {};
+        $scope.firebase_flag = 'on';
 
-        var ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
-        $scope.moviedb = $firebase(ref);
-        var random = $scope.moviedb.$child('initiate');
-        $scope.moviedb.$on('loaded',function(){
+        $scope.sign_on_firebase = function() {
+            $scope.ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
+            $scope.moviedb = $firebase($scope.ref);
+            var random = $scope.moviedb.$child('initiate');
+            $scope.moviedb.$on('loaded',function(){
 //            console.log('Firebase initiated:',random);
-        });
+            });
+        }
 
+        $scope.sign_on_firebase();
 
         $scope.initiate_vars = function() {
 
@@ -197,7 +201,6 @@ angular.module('myApp.controllers', []).
             else {
                 $scope.actor1_dob = list_obj[4];
             }
-
         }
 
         $scope.assign_actor2 = function(list_obj) {
@@ -280,6 +283,11 @@ angular.module('myApp.controllers', []).
 
         $scope.fetchResults = function(){
 
+            if ($scope.firebase_flag == "off") {
+                $scope.sign_on_firebase();
+                $scope.sign_off_firebase();
+            }
+
             $timeout(function() {
                 usSpinnerService.spin('spinner-1');
                 $scope.initiate_vars();
@@ -321,7 +329,7 @@ angular.module('myApp.controllers', []).
 //                        console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)
                         if ($scope.list_obj2.$getIndex().length > 0){
 //                            console.log('Got info from firebase for:',$scope.actor2)
-                            var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3],$scope.list_obj1[3]]
+                            var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3],$scope.list_obj1[4]]
                             $scope.assign_actor2(temp);
                             $scope.actors_db[$scope.actor2] = temp;
                             $scope.check_to_call_intersection($scope.q_url2,2);
@@ -510,6 +518,22 @@ angular.module('myApp.controllers', []).
                 return $scope.actor2_pic_url;
             }
         }
+
+
+
+        $scope.sign_off_firebase = function() {
+            $timeout(function() {
+                if (new Date().getTime() - $scope.online_status > 120000)  {
+                    $scope.ref.remove();
+                    $scope.firebase_flag = 'off';
+                }
+                else {
+                    $scope.sign_off_firebase();
+                }
+            }, 30000);
+        }
+
+        $scope.sign_off_firebase();
 
 
     })
