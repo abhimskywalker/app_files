@@ -185,6 +185,8 @@ angular.module('myApp.controllers', []).
                 intersection_movies.push({'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''});
             }
             usSpinnerService.stop('spinner-1');
+            $timeout.cancel($scope.spinner_promise);
+            console.log("cancelled spinner timeout");
             $scope.complete1 = false;
             $scope.complete2 = false;
         }
@@ -290,6 +292,13 @@ angular.module('myApp.controllers', []).
 
             $timeout(function() {
                 usSpinnerService.spin('spinner-1');
+
+                $scope.spinner_promise = $timeout(function () {
+                    console.log("stopping spinner after 15 sec");
+                    usSpinnerService.stop('spinner-1');
+                    $scope.movies = [{'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''}];
+                }, 15000);
+
                 $scope.initiate_vars();
 //                console.log('Yay Search got clicked for:' + $scope.actor_names );
                 $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
