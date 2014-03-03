@@ -11,14 +11,14 @@ angular.module('myApp.services', [])
         // return promise for response text for the given url
         var getResponseText = function(q_url){
             var deferred = $q.defer();
-            console.log('fetching url: ', q_url);
+//            console.log('fetching url: ', q_url);
 
             deferred.resolve(
                 $.ajax({
                     url: q_url,
                     type: 'GET',
                     success: function(res) {
-                        console.log('returning response for url: '+ q_url);
+//                        console.log('returning response for url: '+ q_url);
                         return res;
                     }
                 })
@@ -32,14 +32,14 @@ angular.module('myApp.services', [])
 
         var getActorMovies = function(actor_link1){
             var deferred = $q.defer();
-            console.log('fetching url: ', actor_link1);
+//            console.log('fetching url: ', actor_link1);
 
             deferred.resolve(
                 $.ajax({
                     url: 'http://www.imdb.com'+actor_link1,
                     type: 'GET',
                     success: function(res) {
-                        console.log('returning response for url: '+ actor_link1);
+//                        console.log('returning response for url: '+ actor_link1);
                         return res;
                     }
                 })

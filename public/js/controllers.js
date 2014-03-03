@@ -246,7 +246,7 @@ angular.module('myApp.controllers', []).
 //                                        console.log('Actor 1 updated');
                                         $scope.assign_actor1(list_obj);
                                         $scope.actors_db[$scope.actor1] = list_obj;
-                                        $scope.moviedb.$child($scope.cleanName($scope.actor1)).$set(list_obj);
+                                        $scope.moviedb.$child($scope.cleanName($scope.actor1.toLowerCase())).$set(list_obj);
                                         $scope.check_to_call_intersection(url, 1);
                                     }
                                 }
@@ -255,7 +255,7 @@ angular.module('myApp.controllers', []).
 //                                        console.log('Actor 2 updated');
                                         $scope.assign_actor2(list_obj);
                                         $scope.actors_db[$scope.actor2] = list_obj;
-                                        $scope.moviedb.$child($scope.cleanName($scope.actor2)).$set(list_obj);
+                                        $scope.moviedb.$child($scope.cleanName($scope.actor2.toLowerCase())).$set(list_obj);
                                         $scope.check_to_call_intersection(url, 2);
                                     }
                                 }
@@ -288,8 +288,8 @@ angular.module('myApp.controllers', []).
                 $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
                 $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
                 $scope.q_url2 = 'http://www.imdb.com/find?q='+$scope.actor2+'&s=nm';
-                $scope.list_obj1 = $scope.moviedb.$child($scope.cleanName($scope.actor1));
-                $scope.list_obj2 = $scope.moviedb.$child($scope.cleanName($scope.actor2));
+                $scope.list_obj1 = $scope.moviedb.$child($scope.cleanName($scope.actor1.toLowerCase()));
+                $scope.list_obj2 = $scope.moviedb.$child($scope.cleanName($scope.actor2.toLowerCase()));
 
                 if ($scope.actor1 in $scope.actors_db) {
                     $scope.assign_actor1($scope.actors_db[$scope.actor1]);
@@ -310,7 +310,6 @@ angular.module('myApp.controllers', []).
                             fetchResponseFactory.getPicture($scope.autocomplete1, 1);
                         }
                     });
-//
                 }
 
                 if ($scope.actor2 in $scope.actors_db) {
