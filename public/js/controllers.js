@@ -332,7 +332,7 @@ angular.module('myApp.controllers', []).
             for (var i = 0; i < titles.length; i++) {
                 var obj = titles[i];
                 if ('s' in obj) {
-                    if (titles[i]["q"] in {'TV movie':1, 'video':1, 'feature':1, 'TV documentary':1, 'TV series':1, "documentary":1, "short":1 }) {
+                    if (titles[i]["q"] in {'TV movie':1, 'video':1, 'feature':1, 'TV documentary':1, 'TV series':1, "documentary":1, "short":1, "video game":1}) {
                         continue;
                     }
                     else {
@@ -452,7 +452,7 @@ angular.module('myApp.controllers', []).
         $scope.get_picture = function(res){
             try {
                 if (res["status"] == "200 OK") {
-                   return "https://www.googleapis.com/freebase/v1/image" + res["result"][0]["mid"] + "?maxwidth=200";
+                   return "https://www.googleapis.com/freebase/v1/image" + res["result"][0]["mid"] + "?maxheight=200&maxwidth=200";
                 }
                 else {
                     return "";
