@@ -32,6 +32,7 @@ angular.module('myApp.controllers', []).
             $scope.q_url1 = '';
             $scope.movies_1 = [];
             $scope.actor1_pic_url = '';
+            $scope.actor1_pic_url_g = '';
             $scope.actor_name1 = '';
             $scope.actor_link1 = '';
             $scope.actor1_dob = '';
@@ -40,6 +41,7 @@ angular.module('myApp.controllers', []).
             $scope.q_url2 = '';
             $scope.movies_2 = [];
             $scope.actor2_pic_url = '';
+            $scope.actor2_pic_url_g = '';
             $scope.actor_name2 = '';
             $scope.actor_link2 = '';
             $scope.actor2_dob = '';
@@ -140,12 +142,12 @@ angular.module('myApp.controllers', []).
                     });
                 }
             }
-        else{
-//            console.log('actor_name1: ', actor_name1);
-//            console.log('trying again');
-            $scope.populate_actor(url, actor_num, num_try+1);
-            deferred.resolve([]);
-        }
+            else {
+    //            console.log('actor_name1: ', actor_name1);
+    //            console.log('trying again');
+                $scope.populate_actor(url, actor_num, num_try+1);
+                deferred.resolve([]);
+            }
             return deferred.promise;
         }
 
@@ -158,22 +160,23 @@ angular.module('myApp.controllers', []).
             $analytics.eventTrack('Search Actor', {  category: 'Actor:(' + $scope.actor_name2 + ')', label: 'Actor:' + $scope.actor_name2 });
             var intersection_movies = [];
 
-            for (var i = $scope.movies_1.length - 1; i >= 0; i--) {
-                for (var j = $scope.movies_2.length - 1; j >= 0; j--) {
-                    if ($scope.movies_1[i]['movie_id'] === $scope.movies_2[j]['movie_id']) {
-                        var m1 = $scope.movies_1[i];
-                        var m2 = $scope.movies_2[j];
-                        intersection_movies.push({'movie_id':m1['movie_id'],'movie_name':m1['movie_name'],'year':m1['year'],'a1_role':m1['role'],'a2_role':m2['role'],'link':m1['link'], 'rating':'', 'poster':''});
-                    };
+            if ($scope.movies_1 && $scope.movies_2) {
+                for (var i = $scope.movies_1.length - 1; i >= 0; i--) {
+                    for (var j = $scope.movies_2.length - 1; j >= 0; j--) {
+                        if ($scope.movies_1[i]['movie_id'] === $scope.movies_2[j]['movie_id']) {
+                            var m1 = $scope.movies_1[i];
+                            var m2 = $scope.movies_2[j];
+                            intersection_movies.push({'movie_id':m1['movie_id'],'movie_name':m1['movie_name'],'year':m1['year'],'a1_role':m1['role'],'a2_role':m2['role'],'link':m1['link'], 'rating':'', 'poster':''});
+                        };
 
-                    if (i===0 && j===0) {
-                        usSpinnerService.stop('spinner-1');
-                        $scope.movies = intersection_movies;
-                        $scope.get_rating();
-//                        $scope.get_picture($scope.actor1);
+                        if (i===0 && j===0) {
+                            usSpinnerService.stop('spinner-1');
+                            $scope.movies = intersection_movies;
+                            $scope.get_rating();
+                        };
                     };
                 };
-            };
+            }
             if (intersection_movies.length == 0){
                 intersection_movies.push({'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''});
             }
@@ -269,6 +272,10 @@ angular.module('myApp.controllers', []).
                 usSpinnerService.spin('spinner-1');
                 $scope.initiate_vars();
                 console.log('Yay Search got clicked for:' + $scope.actor_names );
+
+                fetchResponseFactory.getPicture($scope.autocomplete1, 1);
+                fetchResponseFactory.getPicture($scope.autocomplete2, 2);
+
                 $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
                 $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
                 $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
@@ -442,16 +449,28 @@ angular.module('myApp.controllers', []).
             }
         }
 
-        $scope.get_picture = function(actor){
-//            for (var i = 0; i < $scope.movies.length; i++) {
-                fetchResponseFactory.getPicture(actor)
-                    .then(function(json_obj){
+        $scope.get_picture = function(res){
+            try {
+                if (res["status"] == "200 OK") {
+                   return "https://www.googleapis.com/freebase/v1/image" + res["result"][0]["mid"] + "?maxwidth=200";
+                }
+                else {
+                    return "";
+                }
+            }
+            catch (err) {
+                console.log(err);
+                return "";
+            }
+        }
 
-                        console.log(json_obj);
-//                        $scope.movies[i]['rating'] = rating;
-//                        $scope.movies[i]['poster'] = poster;
-                    })
-//            }
+
+        window.picture_CALLBACK1 = function(res) {
+            $scope.actor1_pic_url_g = $scope.get_picture(res);
+        }
+
+        window.picture_CALLBACK2 = function(res) {
+            $scope.actor2_pic_url_g = $scope.get_picture(res);
         }
     })
 ;
