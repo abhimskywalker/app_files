@@ -273,10 +273,6 @@ angular.module('myApp.controllers', []).
                 usSpinnerService.spin('spinner-1');
                 $scope.initiate_vars();
 //                console.log('Yay Search got clicked for:' + $scope.actor_names );
-
-
-
-
                 $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
                 $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
                 $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
