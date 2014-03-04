@@ -15,8 +15,9 @@ angular.module('myApp.controllers', []).
         $scope.autocomplete_dict = {};
         $scope.firebase_flag = 'on';
 
+        $scope.ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
+
         $scope.sign_on_firebase = function() {
-            $scope.ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
             $scope.moviedb = $firebase($scope.ref);
             var random = $scope.moviedb.$child('initiate');
             $scope.moviedb.$on('loaded',function(){
