@@ -15,15 +15,24 @@ angular.module('myApp.controllers', []).
         $scope.autocomplete_dict = {};
         $scope.firebase_flag = 'on';
 
-        
-        $scope.ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
+        try {
+            $scope.ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
+        }
+        catch(err) {
+            console.log("firebase unreachable", err);
+        }
 
         $scope.sign_on_firebase = function() {
-            $scope.moviedb = $firebase($scope.ref);
-            var random = $scope.moviedb.$child('initiate');
-            $scope.moviedb.$on('loaded',function(){
-            console.log('Firebase initiated:',random);
-            });
+            try {
+                $scope.moviedb = $firebase($scope.ref);
+                var random = $scope.moviedb.$child('initiate');
+                $scope.moviedb.$on('loaded',function(){
+                    console.log('Firebase initiated:',random);
+                });
+            }
+            catch(err) {
+               console.log("firebase unreachable", err);
+            }
         }
 
         $scope.sign_on_firebase();
@@ -535,10 +544,12 @@ angular.module('myApp.controllers', []).
         $scope.sign_off_firebase = function() {
             $timeout(function() {
                 if (new Date().getTime() - $scope.online_status > 120000)  {
-                    $scope.moviedb.$off('loaded');
-                    $scope.ref.off();
-                    $scope.firebase_flag = 'off';
-                    console.log('firebase down');
+                    if ($scope.firebase_flag == "on") {
+                        $scope.moviedb.$off('loaded');
+                        $scope.ref.off();
+                        $scope.firebase_flag = 'off';
+                        console.log('firebase down');
+                    }
                 }
                 else {
                     $scope.sign_off_firebase();
