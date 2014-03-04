@@ -15,6 +15,7 @@ angular.module('myApp.controllers', []).
         $scope.autocomplete_dict = {};
         $scope.firebase_flag = 'on';
 
+        
         $scope.ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
 
         $scope.sign_on_firebase = function() {
