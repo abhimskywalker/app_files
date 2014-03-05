@@ -6,7 +6,7 @@
         <form role="form" ng-submit="fetchResults()">
           <div class="form-group">
               <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma"
-              typeahead="address for address in ac_search($viewValue)" typeahead-on-select="add_comma()" typeahead-wait-ms="100"
+              typeahead="address for address in ac_search($viewValue)" typeahead-on-select="add_comma()" 
               autocomplete="off">
           </div>
           <button type="submit" analytics-on="click" analytics-event="Search Initiated" analytics-category="search for actors" analytics-label="Actors searched for: {{actor_names}}" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
