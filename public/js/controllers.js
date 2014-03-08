@@ -308,7 +308,7 @@ angular.module('myApp.controllers', []).
                     console.log("stopping spinner after 15 sec");
                     usSpinnerService.stop('spinner-1');
                     $scope.movies = [{'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''}];
-                }, 15000);
+                }, 30000);
 
                 $scope.initiate_vars();
 //                console.log('Yay Search got clicked for:' + $scope.actor_names );
