@@ -14,6 +14,7 @@ angular.module('myApp.controllers', []).
         $scope.auto_comma = false;
         $scope.autocomplete_dict = {};
         $scope.firebase_flag = 'on';
+        $scope.alertmsg = '';
 
         document.getElementById('main-content-div').className = "visible";
 
@@ -302,29 +303,32 @@ angular.module('myApp.controllers', []).
                 $scope.sign_on_firebase();
                 $scope.sign_off_firebase();
             }
+            $scope.initiate_vars();
 
             $timeout(function() {
-                usSpinnerService.spin('spinner-1');
 
-                $scope.spinner_promise = $timeout(function () {
-                    console.log("stopping spinner after 15 sec");
-                    usSpinnerService.stop('spinner-1');
-                    $scope.movies = [{'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''}];
-                }, 30000);
-
-                $scope.initiate_vars();
-//                console.log('Yay Search got clicked for:' + $scope.actor_names );
                 var splitvars = $scope.actor_names.split(',');
-                if (splitvars.length != 2) {
-//                    $scope.alertmsg = "Ain't gonna work..."
-                    $scope.movies =[{'movie_id':'','movie_name':"Ain't gonna work...",'year':'','a1_role':'','a2_role':'','link':''}];
+//                console.log(splitvars);
+                if (splitvars.length < 2 || !splitvars[0].trim() || !splitvars[1].trim()) {
+                    $scope.alertmsg = "Ain't gonna work..."
                 }
+
                 else {
-//                    $scope.alertmsg = ""
+                    $scope.alertmsg = '';
+                    usSpinnerService.spin('spinner-1');
+                    $scope.spinner_promise = $timeout(function () {
+                        console.log("stopping spinner after 15 sec");
+                        usSpinnerService.stop('spinner-1');
+                        $scope.movies = [{'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''}];
+                    }, 30000);
+
+//                console.log('Yay Search got clicked for:' + $scope.actor_names );
                     $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
                     $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
                     $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
                     $scope.q_url2 = 'http://www.imdb.com/find?q='+$scope.actor2+'&s=nm';
+//                    console.log($scope.cleanName($scope.actor1.toLowerCase()));
+//                    console.log($scope.cleanName($scope.actor2.toLowerCase()));
                     $scope.list_obj1 = $scope.moviedb.$child($scope.cleanName($scope.actor1.toLowerCase()));
                     $scope.list_obj2 = $scope.moviedb.$child($scope.cleanName($scope.actor2.toLowerCase()));
 
