@@ -17,6 +17,7 @@ angular.module('myApp.controllers', []).
         $scope.alertmsg = '';
 
         document.getElementById('main-content-div').className = "visible";
+        $scope.big_momma_link = "https://i.imgflip.com/7f9bw.jpg";
 
         try {
             $scope.ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
