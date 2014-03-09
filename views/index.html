@@ -45,7 +45,75 @@
     <div id="wrap">
 
       <!-- Begin page content -->
-      <div ng-view class="slide-animation"></div>
+      <!-- <div ng-view class="slide-animation"></div> -->
+      <div ng-controller="Home">
+        <!-- Begin page content -->
+        <div onlinestatus class="container" style="padding-bottom:0.5em;">
+          <div class="row">
+              <div class="col-sm-12" >
+                <h1 style="padding-top: 1.5em;" class="slide-reveal">They were in...</h1>
+                <form role="form" ng-submit="fetchResults()">
+                  <div class="form-group">
+                      <input type="text"  ng-model="actor_names" class="form-control reveal" id="actor-names" placeholder="Enter name of 2 actors separated by comma"
+                      typeahead="address for address in ac_search($viewValue)" typeahead-on-select="add_comma()"
+                      autocomplete="off">
+                  </div>
+                  <button type="submit" analytics-on="click" analytics-event="Search Initiated" analytics-category="search for actors" analytics-label="Actors searched for: {{actor_names}}" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
+                  <!-- <div class="input-group">
+                    <input type="text" ng-model="actor_names" class="form-control" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div> -->
+                </form>
+              </div>
+          </div>
+        </div>
+        <div class="visible-lg" style="position: fixed;width: 100%;">
+          <div class="row">
+              <div class="col-sm-12">
+                  <div class="row">
+                      <div class="col-sm-3 col-xs-3">
+                          <a ng-href="http://www.imdb.com{{actor_link1}}"><img style="max-height:200px;" ng-src="{{actor1_pic_url}}" class="img-circle"></a>
+                          <h5 class="reveal">{{actor_name1}}</h5>
+                          <h5 class="reveal">{{actor1_dob}}</h5>
+                      </div>
+                      <div class="col-sm-6 col-xs-6"></div>
+                      <div class="col-sm-3 col-xs-3">
+                          <a ng-href="http://www.imdb.com{{actor_link2}}"><img  style="max-height:200px;" ng-src="{{actor2_pic_url}}" class="img-circle"></a>
+                          <h5 class="reveal">{{actor_name2}}</h5>
+                          <h5 class="reveal">{{actor2_dob}}</h5>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+              <div class="col-sm-12">
+                  <table class="table table-hover">
+                      <tbody>
+                          <tr ng-repeat="movie in movies | unique:'movie_id' | orderBy:'-year'" class="slide-reveal">
+                              <th>
+                                  <a ng-href="{{movie.link}}" style="color: #000;">{{movie.movie_name}}
+                                      <small ng-show="movie.year" style="margin-top: 0px;"> ({{movie.year}})</small>
+                                  </a>
+                              </th>
+                              <th>
+                                  <p class="pull-right">{{movie.rating}}
+                                      <small ng-show="movie.votes" style="margin-top: 0px;"> ({{movie.votes}} votes)</small>
+                                  </p>
+                              </th>
+                          </tr>
+                      </tbody>
+                  </table>
+                  <div class='col-sm-4' style="margin-left: 48%;margin-top: 5%;">
+                    <span us-spinner="{lines: 17,length: 9,width: 2,radius: 22,corners: 1,rotate: 0,direction: 1,color: '#000',speed: 1.5,trail: 48,shadow: false,hwaccel: false,className: 'spinner',zIndex: 2e9}" spinner-key="spinner-1"></span>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="footer">
