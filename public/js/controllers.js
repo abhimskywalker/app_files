@@ -14,7 +14,8 @@ angular.module('myApp.controllers', []).
         $scope.auto_comma = false;
         $scope.autocomplete_dict = {};
         $scope.firebase_flag = 'on';
-        $scope.alertmsg = '';
+
+        document.getElementById('main-content-div').className = "visible";
 
         try {
             $scope.ref = new Firebase("https://blazing-fire-1777.firebaseio.com/actors/");
