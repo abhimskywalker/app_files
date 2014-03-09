@@ -11,7 +11,7 @@ angular.module('myApp.services', [])
         // return promise for response text for the given url
         var getResponseText = function(q_url){
             var deferred = $q.defer();
-            console.log('fetching url: ', q_url);
+//            console.log('fetching url: ', q_url);
 
             deferred.resolve(
                 $.ajax({
@@ -32,7 +32,7 @@ angular.module('myApp.services', [])
 
         var getActorMovies = function(actor_link1){
             var deferred = $q.defer();
-            console.log('fetching url: ', actor_link1);
+//            console.log('fetching url: ', actor_link1);
 
             deferred.resolve(
                 $.ajax({
@@ -69,7 +69,7 @@ angular.module('myApp.services', [])
             else {
                 var url = API_URL + name.replace(" ","+") + "&callback=picture_CALLBACK2";
             }
-            console.log('fetching url: ', url);
+//            console.log('fetching url: ', url);
             $http.jsonp(url);
         }
 

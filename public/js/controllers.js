@@ -31,7 +31,7 @@ angular.module('myApp.controllers', []).
                 $scope.moviedb = $firebase($scope.ref);
                 var random = $scope.moviedb.$child('initiate');
                 $scope.moviedb.$on('loaded',function(){
-                    console.log('Firebase initiated:',random);
+//                    console.log('Firebase initiated:',random);
                 });
             }
             catch(err) {
@@ -196,12 +196,13 @@ angular.module('myApp.controllers', []).
                     };
                 };
             }
+//            console.log("movies", $scope.movies);
             if (intersection_movies.length == 0){
                 intersection_movies.push({'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''});
             }
             usSpinnerService.stop('spinner-1');
             $timeout.cancel($scope.spinner_promise);
-            console.log("cancelled spinner timeout");
+//            console.log("cancelled spinner timeout");
             $scope.complete1 = false;
             $scope.complete2 = false;
         }
@@ -318,7 +319,7 @@ angular.module('myApp.controllers', []).
                     $scope.alertmsg = '';
                     usSpinnerService.spin('spinner-1');
                     $scope.spinner_promise = $timeout(function () {
-                        console.log("stopping spinner after 15 sec");
+//                        console.log("stopping spinner after 15 sec");
                         usSpinnerService.stop('spinner-1');
                         $scope.movies = [{'movie_id':'','movie_name':'No results.','year':'','a1_role':'','a2_role':'','link':''}];
                     }, 30000);
@@ -341,7 +342,7 @@ angular.module('myApp.controllers', []).
                         $scope.moviedb.$on('loaded',function(){
 //                        console.log('From the on method: firebase: actor, length:',$scope.actor1, $scope.list_obj1.$getIndex().length);
                             if ($scope.list_obj1.$getIndex().length > 0){
-                                console.log('Got info from firebase for:',$scope.actor1)
+//                                console.log('Got info from firebase for:',$scope.actor1)
                                 var temp = [$scope.list_obj1[0], $scope.list_obj1[1], $scope.list_obj1[2], $scope.list_obj1[3], $scope.list_obj1[4]];
                                 $scope.assign_actor1(temp);
                                 $scope.actors_db[$scope.actor1] = temp;
@@ -362,7 +363,7 @@ angular.module('myApp.controllers', []).
                         $scope.moviedb.$on('loaded',function(){
 //                        console.log('firebase: actor, length:',$scope.actor2, $scope.list_obj2.$getIndex().length)
                             if ($scope.list_obj2.$getIndex().length > 0){
-                                console.log('Got info from firebase for:',$scope.actor2)
+//                                console.log('Got info from firebase for:',$scope.actor2)
                                 var temp = [$scope.list_obj2[0],$scope.list_obj2[1],$scope.list_obj2[2],$scope.list_obj2[3],$scope.list_obj2[4]]
                                 $scope.assign_actor2(temp);
                                 $scope.actors_db[$scope.actor2] = temp;
@@ -394,7 +395,13 @@ angular.module('myApp.controllers', []).
                         continue;
                     }
                     else {
-                        result.push(titles[i]['l']);
+                        if (titles[i]['l'] in {'Amir Khan':1}) {
+                            continue;
+                        }
+                        else {
+                            result.push(titles[i]['l']);
+                        }
+
                     }
                 }
             }
@@ -564,7 +571,7 @@ angular.module('myApp.controllers', []).
                         $scope.moviedb.$off('loaded');
                         $scope.ref.off();
                         $scope.firebase_flag = 'off';
-                        console.log('firebase down');
+//                        console.log('firebase down');
                     }
                 }
                 else {
