@@ -585,6 +585,15 @@ angular.module('myApp.controllers', []).
 
         $scope.sign_off_firebase();
 
+        $scope.on_tag_added = function(tag) {
+            if ($scope.actor_names.length > 2) {
+                $scope.actor_names = $scope.actor_names.splice(0,2);
+                $scope.fetchResults();
+            }
+            else if ($scope.actor_names.length == 2) {
+                $scope.fetchResults();
+            }
+        }
 
     })
 ;
