@@ -400,7 +400,7 @@ angular.module('myApp.controllers', []).
                             continue;
                         }
                         else {
-                            result.push(titles[i]['l']);
+                            result.push(titles[i]['l'].replace(".",""));
                         }
 
                     }
