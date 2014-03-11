@@ -309,7 +309,8 @@ angular.module('myApp.controllers', []).
 
             $timeout(function() {
 
-                var splitvars = $scope.actor_names.split(',');
+//                var splitvars = $scope.actor_names.split(',');
+                var splitvars = $scope.actor_names;
 //                console.log(splitvars);
                 if (splitvars.length < 2 || !splitvars[0].trim() || !splitvars[1].trim()) {
                     $scope.alertmsg = "Ain't gonna work..."
@@ -325,8 +326,8 @@ angular.module('myApp.controllers', []).
                     }, 30000);
 
 //                console.log('Yay Search got clicked for:' + $scope.actor_names );
-                    $scope.actor1 = $scope.actor_names.split(',')[0].trim().split(' ').join('+');
-                    $scope.actor2 = $scope.actor_names.split(',')[1].trim().split(' ').join('+');
+                    $scope.actor1 = $scope.actor_names[0].trim().split(' ').join('+');
+                    $scope.actor2 = $scope.actor_names[1].trim().split(' ').join('+');
                     $scope.q_url1 = 'http://www.imdb.com/find?q='+$scope.actor1+'&s=nm';
                     $scope.q_url2 = 'http://www.imdb.com/find?q='+$scope.actor2+'&s=nm';
 //                    console.log($scope.cleanName($scope.actor1.toLowerCase()));
@@ -350,7 +351,7 @@ angular.module('myApp.controllers', []).
                             }
                             else {
                                 $scope.populate_actor($scope.q_url1, 1, 0);
-                                fetchResponseFactory.getPicture($scope.autocomplete1, 1);
+                                fetchResponseFactory.getPicture($scope.actor_names[0], 1);
                             }
                         });
                     }
@@ -371,7 +372,7 @@ angular.module('myApp.controllers', []).
                             }
                             else {
                                 $scope.populate_actor($scope.q_url2, 2, 0);
-                                fetchResponseFactory.getPicture($scope.autocomplete2, 2);
+                                fetchResponseFactory.getPicture($scope.actor_names[1], 2);
                             }
                         });
                     }
@@ -414,33 +415,36 @@ angular.module('myApp.controllers', []).
 
         $scope.ac_search = function(term) {
             $scope.ac_reload_flag = false;
-            if (term != $scope.autocomplete1 + ", " + $scope.autocomplete2) {
-                if (term.indexOf(',') > -1){
-                    var typed = term.trim().split(",");
-                    if ($scope.autocomplete1 == typed[0].trim() && $scope.autocomplete1 != "") {
-                        $scope.autocomplete2 = "";
-                        term = typed[1].trim();
-                    }
-                    else if ($scope.autocomplete2 == typed[1].trim() && $scope.autocomplete2 != ""){
-                        $scope.autocomplete1 = "";
-                        term = typed[0].trim();
-                    }
-                    else if (!$scope.auto_comma) {
-                        $scope.autocomplete1 = typed[0].trim();
-                        term = typed[1].trim();
-                    }
-                }
-                else {
-                    var index2 = term.indexOf($scope.autocomplete2);
-                    if (index2 > -1 && $scope.autocomplete2 != "") {
-                        term = term.substr(0,index2).trim();
-                    }
-                    else {
-                        $scope.autocomplete2 = "";
-                    }
-                    $scope.autocomplete1 = "";
-                }
 
+//            if (term != $scope.autocomplete1 + ", " + $scope.autocomplete2) {
+//            if (term != $scope.actor_names) {
+//                if (term.indexOf(',') > -1){
+//                    var typed = term.trim().split(",");
+//                    if ($scope.autocomplete1 == typed[0].trim() && $scope.autocomplete1 != "") {
+//                        $scope.autocomplete2 = "";
+//                        term = typed[1].trim();
+//                    }
+//                    else if ($scope.autocomplete2 == typed[1].trim() && $scope.autocomplete2 != ""){
+//                        $scope.autocomplete1 = "";
+//                        term = typed[0].trim();
+//                    }
+//                    else if (!$scope.auto_comma) {
+//                        $scope.autocomplete1 = typed[0].trim();
+//                        term = typed[1].trim();
+//                    }
+//                }
+//                else {
+//                    var index2 = term.indexOf($scope.autocomplete2);
+//                    if (index2 > -1 && $scope.autocomplete2 != "") {
+//                        term = term.substr(0,index2).trim();
+//                    }
+//                    else {
+//                        $scope.autocomplete2 = "";
+//                    }
+//                    $scope.autocomplete1 = "";
+//                }
+
+                term = term.trim();
                 term = term.split(" ");
 
                 if (term[1] == ""){
@@ -460,8 +464,7 @@ angular.module('myApp.controllers', []).
                         AutoComplete.autocomplete_search(term.toLowerCase());
                     }
                 }
-            }
-
+//            }
             var timeout_fn = function(counter) {
                 if (counter < 20) {
                     counter++;
@@ -484,20 +487,20 @@ angular.module('myApp.controllers', []).
 
 
 
-        $scope.add_comma = function() {
-            $timeout(function() {
-                var term = document.getElementById("actor-names").value;
-                if ($scope.autocomplete1 == "") {
-                    $scope.autocomplete1 = term;
-                }
-                else {
-                    $scope.autocomplete2 = term;
-                }
-                document.getElementById("actor-names").value = $scope.autocomplete1 + ", " + $scope.autocomplete2;
-                $scope.auto_comma = true;
-                $scope.actor_names = $scope.autocomplete1 + ", " + $scope.autocomplete2;
-            },2) ;
-        }
+//        $scope.add_comma = function() {
+//            $timeout(function() {
+//                var term = document.getElementById("actor-names").value;
+//                if ($scope.autocomplete1 == "") {
+//                    $scope.autocomplete1 = term;
+//                }
+//                else {
+//                    $scope.autocomplete2 = term;
+//                }
+//                document.getElementById("actor-names").value = $scope.autocomplete1 + ", " + $scope.autocomplete2;
+//                $scope.auto_comma = true;
+//                $scope.actor_names = $scope.autocomplete1 + ", " + $scope.autocomplete2;
+//            },2) ;
+//        }
 
 
         $scope.get_rating = function(){

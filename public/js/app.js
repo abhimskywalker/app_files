@@ -15,7 +15,8 @@ angular.module('myApp', [
   'angulartics',
   'angulartics.google.analytics',
   "firebase",
-  'angularSpinner'
+  'angularSpinner',
+        'ngTagsInput'
 ])
 .config(function($routeProvider, $httpProvider, $parseProvider) {
   $httpProvider.defaults.useXDomain = true;
