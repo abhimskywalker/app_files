@@ -60,6 +60,7 @@ html, body {
 
 .bootstrap .autocomplete {
     border-radius: 4px;
+    max-width: 
 }
 
 .bootstrap .autocomplete .tag-item.selected {
