@@ -296,6 +296,7 @@ angular.module('myApp.controllers', []).
             name = name.replace('$','')
             name = name.replace('[','')
             name = name.replace(']','')
+            name = name.replace('-',' ')
             return name
         }
 
@@ -400,7 +401,7 @@ angular.module('myApp.controllers', []).
                             continue;
                         }
                         else {
-                            result.push(titles[i]['l'].replace(".",""));
+                            result.push($scope.cleanName(titles[i]['l']));
                         }
 
                     }
