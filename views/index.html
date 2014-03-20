@@ -80,7 +80,8 @@
                                   add-on-comma="true"
                                   add-on-space="false"
                                   max-length="40"
-                                  on-tag-added="on_tag_added($tag)" >
+                                  on-tag-added="on_tag_added($tag)"
+                                  on-tag-removed="on_tag_removed($tag)">
 
                           <auto-complete source="ac_search($query)"
                                          min-length="0"
@@ -88,8 +89,8 @@
                           </auto-complete>
                       </tags-input>
 
-                  </div>
-                  <button type="submit" analytics-on="click" analytics-event="Search Initiated" analytics-category="search for actors" analytics-label="Actors searched for: {{actor_names}}" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>
+                  </div><br>
+                  <!--<button type="submit" analytics-on="click" analytics-event="Search Initiated" analytics-category="search for actors" analytics-label="Actors searched for: {{actor_names}}" class="btn btn-lg btn-default" ng-submit="fetchResults()">Search</button>-->
                   <!-- <div class="input-group">
                     <input type="text" ng-model="actor_names" class="form-control" id="actor-names" placeholder="Enter name of 2 actors separated by comma">
                     <span class="input-group-btn">
@@ -105,15 +106,15 @@
               <div class="col-sm-12">
                   <div class="row">
                       <div class="col-sm-3 col-xs-3">
-                          <a ng-href="http://www.imdb.com{{actor_link1}}"><img style="max-height:200px;" ng-show="actor1_pic_url" ng-src="{{actor1_pic_url}}" class="img-circle"></a>
-                          <h5 class="reveal">{{actor_name1}}</h5>
-                          <h5 class="reveal">{{actor1_dob}}</h5>
+                          <a ng-href="http://www.imdb.com{{metadata[0][2]}}"><img style="max-height:200px;" ng-show="metadata[0][0]" ng-src="{{metadata[0][0]}}" class="img-circle"></a>
+                          <h5 class="reveal">{{metadata[0][1]}}</h5>
+                          <h5 class="reveal">{{metadata[0][3]}}</h5>
                       </div>
                       <div class="col-sm-6 col-xs-6"></div>
                       <div class="col-sm-3 col-xs-3">
-                          <a ng-href="http://www.imdb.com{{actor_link2}}"><img  style="max-height:200px;" ng-show="actor2_pic_url" ng-src="{{actor2_pic_url}}" class="img-circle"></a>
-                          <h5 class="reveal">{{actor_name2}}</h5>
-                          <h5 class="reveal">{{actor2_dob}}</h5>
+                          <a ng-href="http://www.imdb.com{{metadata[1][2]}}"><img  style="max-height:200px;" ng-show="metadata[1][0]" ng-src="{{metadata[1][0]}}" class="img-circle"></a>
+                          <h5 class="reveal">{{metadata[1][1]}}</h5>
+                          <h5 class="reveal">{{metadata[1][3]}}</h5>
                       </div>
                   </div>
               </div>
@@ -122,17 +123,17 @@
         <div class="container">
           <div class="row">
               <div class="col-sm-12">
-                  <img ng-show="alertmsg" src="{{big_momma_link}}" style="width:100%;">
-                  <h4 ng-show="alertmsg" style="color: #000000">Hint: Enter 2 inputs...</h4>
+                  <!--<img ng-show="alertmsg" src="{{big_momma_link}}" style="width:100%;">-->
+                  <!--<h4 ng-show="alertmsg" style="color: #000000">Hint: Enter 2 inputs...</h4>-->
                   <table class="table table-hover">
                       <tbody>
-                          <tr ng-repeat="movie in movies | unique:'movie_id' | orderBy:'-year'" class="slide-reveal">
+                          <tr ng-repeat="movie in movies_final | unique:'movie_id' | orderBy:'-year'" class="slide-reveal">
                               <th>
                                   <a ng-href="{{movie.link}}" style="color: #000;">{{movie.movie_name}}
                                       <small ng-show="movie.year" style="margin-top: 0px;"> ({{movie.year}})</small>
                                   </a>
                               </th>
-                              <th>
+                              <th style="width: 25%">
                                   <p class="pull-right">{{movie.rating}}
                                       <small ng-show="movie.votes" style="margin-top: 0px;"> ({{movie.votes}} votes)</small>
                                   </p>
