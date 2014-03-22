@@ -61,16 +61,16 @@ angular.module('myApp.services', [])
             return deferred.promise;
         };
 
-        var getPicture = function(name, flag) {
+        var getPicture = function(name) {
+            var deferred = $q.defer();
             var API_URL = "https://www.googleapis.com/freebase/v1/search?filter=(all+type:/people/person+domain:/film)&limit=1&query=";
-            if (flag==1) {
-                var url = API_URL + name.replace(" ","+") + "&callback=picture_CALLBACK1";
-            }
-            else {
-                var url = API_URL + name.replace(" ","+") + "&callback=picture_CALLBACK2";
-            }
-//            console.log('fetching url: ', url);
-            $http.jsonp(url);
+            var url = API_URL + name.replace(" ","+");
+            deferred.resolve(
+                $http.get(url).success(function(res) {
+                    return res;
+                })
+            );
+            return deferred.promise;
         }
 
         return {
