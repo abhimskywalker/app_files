@@ -446,7 +446,6 @@ angular.module('myApp.controllers', []).
                     }
                 }
             }
-
             return timeout_fn(0);
         }
 
@@ -557,12 +556,10 @@ angular.module('myApp.controllers', []).
                         }
                         catch (err) {
                             console.log('some error');
-
                         }
                         page1_promise.resolve(function(){
                             return true;
                         })
-
                     }, function(reason){
                         console.log(reason);
                     }) ;
@@ -640,9 +637,7 @@ angular.module('myApp.controllers', []).
 
 
         $scope.on_tag_added = function(tag) {
-
             $scope.call_fetch_results(tag, 'push');
-
             var actor_query = tag.trim().split(' ').join('+');
             $scope.buffer_call_page1(actor_query).then(function(res){
                 $scope.buffer_call_page2($scope.html_resp_dict_page1[actor_query], actor_query);
@@ -658,8 +653,9 @@ angular.module('myApp.controllers', []).
             }
 
             $analytics.eventTrack('Search Actor', {  category: 'Actor:(' + tag + ')', label: 'Actor:' + tag });
-            $analytics.eventTrack('Search Pair', {  category: 'Actor Pair:(' + $scope.actor_names.toString() + ')', label: 'Actors:' + $scope.actor_names.toString() });
-
+            if ($scope.actor_names.length > 1) {
+                $analytics.eventTrack('Search Pair', {  category: 'Actor Pair:(' + $scope.actor_names.toString() + ')', label: 'Actors:' + $scope.actor_names.toString() });
+            }
         }
 
 
@@ -673,8 +669,6 @@ angular.module('myApp.controllers', []).
                 $scope.metadata = [];
             }
         }
-
-
 
     })
 ;
