@@ -380,7 +380,20 @@ angular.module('myApp.controllers', []).
             for (var i = 0; i < titles.length; i++) {
                 var obj = titles[i];
                 if ('s' in obj) {
-                    if (titles[i]["q"] in {'TV movie':1, 'video':1, 'feature':1, 'TV documentary':1, 'TV series':1, "documentary":1, "short":1, "video game":1}) {
+                    if (titles[i]["q"] in
+                                        {
+                                            'TV movie':1,
+                                            'video':1,
+                                            'feature':1,
+                                            'TV documentary':1,
+                                            'TV series':1,
+                                            "documentary":1,
+                                            "short":1,
+                                            "video game":1,
+                                            "TV series documentary":1,
+                                            "TV special":1
+                                        }
+                        ) {
                         continue;
                     }
                     else {
